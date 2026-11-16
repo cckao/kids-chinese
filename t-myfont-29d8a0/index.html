@@ -688,19 +688,19 @@ function drawHollow(x,g,S,t){const a=Math.abs(x.getTransform().a)||1,N=Math.ceil
   x.drawImage(D,0,0,S,S);}
 /* 粉筆破碎感（Ashley 2026-11-16，參考粉筆體）：筆畫裡面實心，只有邊緣一圈被啃出大小缺口，裡面零星小白點；整個字先合成再挖，不會有接縫 */
 const BLOBC={};
-function blobMask(N,feat,th,seed){const key=[N,feat|0,th,seed].join(",");if(BLOBC[key])return BLOBC[key];let s=seed*7919+13;const R=()=>{s=(s*16807)%2147483647;return s/2147483647;};
-  const n=Math.max(2,Math.round(N/feat)),lo=document.createElement("canvas");lo.width=lo.height=n;const l=lo.getContext("2d"),im=l.createImageData(n,n);for(let i=0;i<n*n;i++){const v=R()*255;im.data[i*4]=im.data[i*4+1]=im.data[i*4+2]=v;im.data[i*4+3]=255;}l.putImageData(im,0,0);
-  const c=document.createElement("canvas");c.width=c.height=N;const x=c.getContext("2d");x.imageSmoothingEnabled=true;x.imageSmoothingQuality="high";x.drawImage(lo,0,0,N,N);const d=x.getImageData(0,0,N,N);for(let i=0;i<N*N;i++)d.data[i*4+3]=d.data[i*4]/255<th?255:0;x.putImageData(d,0,0);
-  const ks=Object.keys(BLOBC);if(ks.length>60)delete BLOBC[ks[0]];return BLOBC[key]=c;}
+function blobMask(ratio,th,seed){const B=512,key=[ratio,th,seed].join(",");if(BLOBC[key])return BLOBC[key];let s=seed*7919+13;const R=()=>{s=(s*16807)%2147483647;return s/2147483647;};   // 固定 512 格算一次，之後放大用（Ashley：粉筆會 lag）
+  const n=Math.max(2,Math.round(1/ratio)),lo=document.createElement("canvas");lo.width=lo.height=n;const l=lo.getContext("2d"),im=l.createImageData(n,n);for(let i=0;i<n*n;i++){const v=R()*255;im.data[i*4]=im.data[i*4+1]=im.data[i*4+2]=v;im.data[i*4+3]=255;}l.putImageData(im,0,0);
+  const c=document.createElement("canvas");c.width=c.height=B;const x=c.getContext("2d");x.imageSmoothingEnabled=true;x.imageSmoothingQuality="high";x.drawImage(lo,0,0,B,B);const d=x.getImageData(0,0,B,B);for(let i=0;i<B*B;i++)d.data[i*4+3]=d.data[i*4]/255<th?255:0;x.putImageData(d,0,0);
+  return BLOBC[key]=c;}
 function drawChalky(x,g,S,sq){if(!sq&&!g.img)g={s:g.s.map(st=>{const pw=(st.p[0]&&st.p[0][2])||30,tw=Math.min(44,Math.max(24,pw*(st.m||1)*.62));return {...st,b:"_sq",a:null,m:tw/pw};})};   // 粉筆效果：先用方形筆頭重畫（Ashley：粉筆字要方頭）
-  const a=Math.abs(x.getTransform().a)||1,N=Math.max(8,Math.ceil(S*a)),mk=()=>{const c=document.createElement("canvas");c.width=c.height=N;return c;};
+  const a=Math.abs(x.getTransform().a)||1,N=Math.max(8,Math.min(600,Math.ceil(S*a))),mk=()=>{const c=document.createElement("canvas");c.width=c.height=N;return c;};
   const M=mk(),m=M.getContext("2d");m.scale(N/S,N/S);drawGlyph(m,g,S);m.setTransform(1,0,0,1,0,0);
   const p0=(g.s[0]&&g.s[0].p[0])||[3,5],sd=(Math.round(p0[0]*7+p0[1]*13)%8)+1;   // 每個字的缺口位置不一樣
   const r=N*.006,E=mk(),e=E.getContext("2d");e.drawImage(M,0,0);e.globalCompositeOperation="destination-in";for(let i=0;i<16;i++){const an=i/16*Math.PI*2;e.drawImage(M,Math.cos(an)*r,Math.sin(an)*r);}
-  const H=mk(),h=H.getContext("2d");h.drawImage(blobMask(N,N*.011,.22,sd),0,0);h.drawImage(blobMask(N,N*.006,.16,sd+20),0,0);h.globalCompositeOperation="destination-in";h.drawImage(blobMask(N,N*.07,.58,sd+80),0,0);   // 不規則：只有一部分區域有毛邊，其他地方比較光滑
-  h.globalCompositeOperation="source-over";h.drawImage(blobMask(N,N*.026,.09,sd+60),0,0);   // 偶爾一個比較大的缺口
+  const H=mk(),h=H.getContext("2d");h.drawImage(blobMask(.011,.22,sd),0,0,N,N);h.drawImage(blobMask(.006,.16,sd+20),0,0,N,N);h.globalCompositeOperation="destination-in";h.drawImage(blobMask(.07,.58,sd+80),0,0,N,N);   // 不規則：只有一部分區域有毛邊，其他地方比較光滑
+  h.globalCompositeOperation="source-over";h.drawImage(blobMask(.026,.09,sd+60),0,0,N,N);   // 偶爾一個比較大的缺口
   h.globalCompositeOperation="destination-out";h.drawImage(E,0,0);   // 只在邊緣那一圈挖缺口（Ashley 2026-11-16：吃掉太多 → 改小、改少）
-  const C=mk(),c=C.getContext("2d");c.drawImage(blobMask(N,N*.007,.008,sd+40),0,0);c.globalCompositeOperation="destination-in";c.drawImage(E,0,0);   // 裡面小白點
+  const C=mk(),c=C.getContext("2d");c.drawImage(blobMask(.007,.008,sd+40),0,0,N,N);c.globalCompositeOperation="destination-in";c.drawImage(E,0,0);   // 裡面小白點
   m.globalCompositeOperation="destination-out";m.drawImage(H,0,0);m.drawImage(C,0,0);x.drawImage(M,0,0,S,S);}
 let TFX=lsGet("mf-tfx",HOL?"hollow":"none");let FFX=lsGet("mf-ffx","none");   // 字型效果   // 字的效果：none／hollow 空心／chalk 粉筆
 function drawEff(x,g,S,fx){return fx==="hollow"?drawHollow(x,g,S):fx==="chalk"?drawChalky(x,g,S):drawGlyph(x,g,S);}
@@ -1757,7 +1757,7 @@ function renderImps(){const w=$("impWrap");if(!w)return;w.hidden=!IMPS.length;co
     L.appendChild(el);}}
 
 /* ---------- 介面文字加注音：字型自帶注音，多音字用 ssNN 換讀音（PW：語詞 → [[第幾個字, 第幾個讀音]]） ---------- */
-const PW={"一個":[[1,1]],"名字":[[1,1]],"一部分":[[2,1]],"重寫":[[0,1]],"媽媽":[[1,1]],"格子":[[1,1]],"幾乎":[[0,1]],"這個":[[1,1]],"幾個":[[1,1]],"下載":[[1,1]],"音樂":[[1,1]],"部分":[[1,1]],"空白":[[0,1]],"重複":[[0,1]],"句子":[[1,1]],"記得":[[1,1]],"的當":[[0,1],[1,1]],"更新":[[0,1]],"馬偕":[[1,1]],"孩子":[[1,1]],"有空":[[1,1]],"衣裳":[[1,1]],"奶奶":[[1,1]],"鼻子":[[1,1]],"葉子":[[1,1]],"少年":[[0,1]],"鞋子":[[1,1]],"重新":[[0,1]],"一行":[[1,1]],"成長":[[1,1]],"喝采":[[0,1]],"爸爸":[[1,1]],"樣子":[[1,1]],"影子":[[1,1]],"聲調":[[1,1]],"大個子":[[2,1]],"樂師":[[0,1]],"當成":[[0,1]],"相鄰":[[0,1]],"重拍":[[0,1]],"妹妹":[[1,1]],"本分":[[1,1]],"呱呱":[[0,2],[1,2]],"兔子":[[1,1]],"接縫":[[1,1]],"梯子":[[1,1]],"重疊":[[0,1]],"泡泡":[[0,1],[1,1]],"還原":[[0,1]],"個子":[[1,1]],"間隔":[[0,1]],"春華":[[1,1]],"交響樂":[[2,1]],"多重":[[1,1]],"為何":[[0,1]],"婆婆":[[1,1]],"唉呀":[[1,1]],"石頭":[[1,1]],"長大":[[0,1]],"唱反調":[[2,1]],"尾巴":[[1,1]],"木頭":[[1,1]],"哪個":[[1,1]],"伯伯":[[1,1]],"鴨子":[[1,1]],"著地":[[0,4]],"為什麼":[[0,1]],"橘子":[[1,1]],"哥哥":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
+const PW={"石頭":[[1,1]],"下載":[[1,1]],"一個":[[1,1]],"兔子":[[1,1]],"格子":[[1,1]],"鴨子":[[1,1]],"記得":[[1,1]],"音樂":[[1,1]],"婆婆":[[1,1]],"句子":[[1,1]],"馬偕":[[1,1]],"聲調":[[1,1]],"奶奶":[[1,1]],"重寫":[[0,1]],"這個":[[1,1]],"幾個":[[1,1]],"名字":[[1,1]],"樂師":[[0,1]],"哥哥":[[1,1]],"一部分":[[2,1]],"當成":[[0,1]],"幾乎":[[0,1]],"葉子":[[1,1]],"接縫":[[1,1]],"有空":[[1,1]],"成長":[[1,1]],"少年":[[0,1]],"空白":[[0,1]],"本分":[[1,1]],"唉呀":[[1,1]],"媽媽":[[1,1]],"重複":[[0,1]],"衣裳":[[1,1]],"哪個":[[1,1]],"大個子":[[2,1]],"伯伯":[[1,1]],"樣子":[[1,1]],"重新":[[0,1]],"的當":[[0,1],[1,1]],"孩子":[[1,1]],"影子":[[1,1]],"重疊":[[0,1]],"重拍":[[0,1]],"鞋子":[[1,1]],"呱呱":[[0,2],[1,2]],"爸爸":[[1,1]],"部分":[[1,1]],"唱反調":[[2,1]],"泡泡":[[0,1],[1,1]],"一行":[[1,1]],"尾巴":[[1,1]],"個子":[[1,1]],"著地":[[0,4]],"橘子":[[1,1]],"喝采":[[0,1]],"長大":[[0,1]],"為什麼":[[0,1]],"木頭":[[1,1]],"間隔":[[0,1]],"鼻子":[[1,1]],"多重":[[1,1]],"妹妹":[[1,1]],"交響樂":[[2,1]],"春華":[[1,1]],"為何":[[0,1]],"更新":[[0,1]],"相鄰":[[0,1]],"梯子":[[1,1]],"還原":[[0,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
 let ZYON=lsGet("mf-zy2",false)===true;   // 預設不加注音（Ashley 2026-11-15：使用者是大人），想要的人按右上角「注音」打開
 function zyMark(root){if(!PWRE||!ZYON)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|OPTION|CANVAS)$/.test(p.nodeName)||p.dataset&&p.dataset.zy||!/[\u4e00-\u9fff]/.test(n.nodeValue))return NodeFilter.FILTER_REJECT;PWRE.lastIndex=0;return PWRE.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
   const L=[];while(w.nextNode())L.push(w.currentNode);
