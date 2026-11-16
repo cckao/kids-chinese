@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="zh-Hant">
-<head>
-<meta name="robots" content="noindex,nofollow">
+<head><meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>手寫字型安裝教學</title>
@@ -37,6 +36,12 @@ p{margin:6px 0}
 [hidden]{display:none!important}
 a{color:var(--ink)}
 .foot{text-align:center;color:var(--soft);font-size:13px;margin-top:24px}
+.ostab{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0}
+.car .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.car .slides::-webkit-scrollbar{display:none}
+.car .sl{flex:0 0 100%;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-sizing:border-box}
+.car .sl svg{width:100%;max-width:420px;max-height:240px;height:auto;display:block;margin:0 auto 10px}.car .slides{align-items:flex-start}.car .sl p{margin:6px 0}
+.car .nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px}.car .dots{display:flex;gap:6px}.car .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:block}.car .dots i.on{background:var(--ink)}
+.btn.sm{padding:4px 14px;font-size:14px}
 @media (max-width:520px){.step{grid-template-columns:110px 1fr;gap:10px}.step svg{width:110px}.seg .btn{font-size:14px;padding:8px 2px}h1{font-size:23px}}
 </style>
 </head>
@@ -47,13 +52,13 @@ a{color:var(--ink)}
   <div class="sub">MY HANDWRITING FONT ・ 國語生字學習站</div>
 
   <div class="card">
-    <p>在「我的手寫字」寫好字以後，可以把自己的字裝到手機或電腦。照你的裝置選一個教學：</p>
-    <div class="seg" role="tablist">
-      <button class="btn on" data-t="ios" type="button">iPhone／iPad</button>
-      <button class="btn" data-t="and" type="button">Android</button>
+    <p>在「我的手寫字」寫好字以後，可以把自己的字裝到電腦（Windows、Mac），在 Word、簡報裡打出自己的字。</p>
+    <div class="seg" role="tablist" hidden>
+      <button class="btn" data-t="ios" type="button" hidden>iPhone／iPad</button>
+      <button class="btn" data-t="and" type="button" hidden>Android</button>
       <button class="btn" data-t="pc" type="button">電腦</button>
     </div>
-    <div class="box warn"><b>先知道：</b>裝好的字型只會出現在「<b>可以選字型</b>」的 App 或軟體，例如 Word、Pages、Keynote、GoodNotes、標籤機軟體。<br>IG、LINE 和手機本身的系統字型<b>沒辦法換</b>。想在 IG 限動用自己的字，請用「我的手寫字」裡的「<b>用我的字寫一句話</b>」做成動圖，照那裡寫的步驟貼到限動，不用安裝。</div>
+    <div class="box warn"><b>先知道：</b>裝好的字型會出現在 Word、PowerPoint、Pages、Keynote 這些<b>會列出電腦字型</b>的軟體。Google 文件、Canva 這類網頁版軟體沒辦法用。</div>
   </div>
 
   <!-- iPhone / iPad -->
@@ -97,20 +102,30 @@ a{color:var(--ink)}
   <!-- 電腦 -->
   <section data-p="pc" hidden>
     <div class="card">
-      <span class="route">教學 3</span>
+      <span class="route">安裝教學</span>
       <h2>電腦：Windows、Mac</h2>
       <p class="note" style="margin-top:0">在「我的手寫字」按「<b>做成字型檔並下載</b>」，再照你的電腦安裝。電腦裝好以後，大部分軟體都能用。</p>
-      <h3>Windows</h3>
-      <div class="step"><svg data-img="wfile"></svg><div><span class="num">1</span>打開「<b>檔案總管</b>」→「<b>下載</b>」，找到「○○的字.otf」。</div></div>
-      <div class="step"><svg data-img="wmenu"></svg><div><span class="num">2</span>在檔案上按<b>右鍵</b>，選「<b>安裝</b>」。<p class="note">Windows 11 沒看到「安裝」的話，先點「顯示其他選項」。也可以點兩下打開預覽，再按左上角「安裝」。</p></div></div>
-      <div class="step"><svg data-img="word"></svg><div><span class="num">3</span>打開 Word、PowerPoint 或標籤機軟體（已經開著的話，<b>先關掉再重開</b>），在字型選單找「<b>○○的字</b>」。</div></div>
-      <h3>Mac</h3>
-      <div class="step"><svg data-img="mfile"></svg><div><span class="num">1</span>打開「<b>Finder</b>」→「<b>下載項目</b>」，<b>點兩下</b>「○○的字.otf」。</div></div>
-      <div class="step"><svg data-img="fb"></svg><div><span class="num">2</span>會打開「字體簿」的預覽視窗，按右下角「<b>安裝字體</b>」。<p class="note">如果跳出「字體驗證」警告，手寫字型常會這樣，勾選後按「安裝已勾選的項目」。</p></div></div>
-      <div class="step"><svg data-img="pages"></svg><div><span class="num">3</span>打開 Pages、Word 或標籤機軟體（已經開著的話，<b>先關掉再重開</b>），在字型選單找「<b>○○的字</b>」。</div></div>
+      <div class="ostab" role="tablist"><button class="btn on" data-os="win" type="button">Windows</button><button class="btn" data-os="mac" type="button">Mac</button></div>
+      <div class="car" data-os="win">
+        <div class="slides">
+          <div class="sl"><svg data-img="wfile"></svg><p><span class="num">1</span>打開「<b>檔案總管</b>」→「<b>下載</b>」，找到「○○的字.otf」。</p></div>
+          <div class="sl"><svg data-img="wmenu"></svg><p><span class="num">2</span>在檔案上按<b>右鍵</b>，選「<b>安裝</b>」。</p><p class="note">Windows 11 沒看到「安裝」的話，先點「顯示其他選項」。也可以點兩下打開預覽，再按左上角「安裝」。</p></div>
+          <div class="sl"><svg data-img="word"></svg><p><span class="num">3</span>打開 Word 或 PowerPoint（已經開著的話，<b>先關掉再重開</b>），在字型選單找「<b>○○的字</b>」。</p></div>
+        </div>
+        <div class="nav"><button class="btn sm prev" type="button" aria-label="上一張">←</button><div class="dots"></div><button class="btn sm next" type="button" aria-label="下一張">→</button></div>
+      </div>
+      <div class="car" data-os="mac" hidden>
+        <div class="slides">
+          <div class="sl"><svg data-img="mfile"></svg><p><span class="num">1</span>打開「<b>Finder</b>」→「<b>下載項目</b>」，<b>點兩下</b>「○○的字.otf」。</p></div>
+          <div class="sl"><svg data-img="fb"></svg><p><span class="num">2</span>會打開「字體簿」的預覽視窗，按右下角「<b>安裝字體</b>」。</p><p class="note">如果跳出「字體驗證」警告，手寫字型常會這樣，勾選後按「安裝已勾選的項目」。</p></div>
+          <div class="sl"><svg data-img="word"></svg><p><span class="num">3</span>打開 Pages、Keynote 或 Word（已經開著的話，<b>先關掉再重開</b>），在字型選單找「<b>○○的字</b>」。</p></div>
+        </div>
+        <div class="nav"><button class="btn sm prev" type="button" aria-label="上一張">←</button><div class="dots"></div><button class="btn sm next" type="button" aria-label="下一張">→</button></div>
+      </div>
+      <p class="note" style="text-align:center;margin-top:4px">往左滑看下一步</p>
       <h3>裝好以後，哪些軟體可以用？</h3>
       <ul>
-        <li><b>可以：</b>Word、PowerPoint、Pages、Keynote、Illustrator 等會列出電腦字型的軟體。<b>電腦版的標籤機軟體大多也會列出電腦裡的字型</b>，可以直接選。</li>
+        <li><b>可以：</b>Word、PowerPoint、Pages、Keynote、Illustrator 等會列出電腦字型的軟體。</li>
         <li><b>不行：</b>Google 文件、Canva 免費版這類網頁版軟體。</li>
       </ul>
     </div>
@@ -122,8 +137,7 @@ a{color:var(--ink)}
       <li>還沒寫過的字，會自動用其他字型顯示。多寫一些字，看起來會更完整。</li>
       <li>寫了更多字以後，重新下載字型檔再安裝一次，就會換成新的。勾選「字型名稱加上編號」，新舊字型才不會搞混。</li>
       <li>文件傳給別人時，對方沒有這個字型就會變成別的字。<b>先存成 PDF 再傳</b>，就能保留自己的字。</li>
-            <li>不想要了：iPhone、iPad 到「設定 → 一般 → VPN 與裝置管理」點描述檔，按「移除描述檔」；Windows 到「設定 → 個人化 → 字型」解除安裝；Mac 在字體簿刪除。</li>
-      <li>iPhone、iPad 重新安裝新版本時，可以先把舊的描述檔移除，字型清單比較不會混在一起。</li>
+            <li>不想要了：Windows 到「設定 → 個人化 → 字型」解除安裝；Mac 在字體簿刪除。</li>
     </ul>
   </div>
   <div class="foot">國語生字學習站 ・ Ashley 設計規劃</div>
@@ -134,7 +148,7 @@ a{color:var(--ink)}
 const tabs=document.querySelectorAll(".seg .btn");
 function show(t){tabs.forEach(b=>b.classList.toggle("on",b.dataset.t===t));document.querySelectorAll("section[data-p]").forEach(s=>s.hidden=s.dataset.p!==t);}
 tabs.forEach(b=>b.onclick=()=>show(b.dataset.t));
-{const u=navigator.userAgent;if(/Android/.test(u))show("and");else if(/Windows/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints<2))show("pc");}
+show("pc");   // 先只教電腦（Ashley 2026-11-16）
 
 /* 示意圖：自己畫的簡單畫面，粉紅圈＝要按的地方 */
 const C={ink:"#534545",line:"#d9cfcb",soft:"#a39494",fill:"#f6f1ee",hl:"#eb53d0",m:"#96d6d4",y:"#fbe94e",blue:"#3b82f6"};
@@ -166,6 +180,13 @@ const IMG={
   mfile:screen(R(10,26,46,90,{r:4,f:C.fill})+T(16,44,"最近項目",{fs:8})+T(16,60,"下載項目",{fs:8,b:1})+R(80,34,40,48,{r:4,f:"#fff"})+T(100,64,"Aa",{a:"middle",b:1,fs:12})+T(100,98,"○○的字.otf",{a:"middle",fs:8.5,b:1})+HL(76,30,48,76),"下載項目"),
   fb:screen(T(100,58,"我愛寫字 ABC 123",{a:"middle",fs:13,b:1})+T(100,78,"○○的字",{a:"middle",fs:9,c:C.soft})+R(126,94,62,20,{r:5,f:C.ink,s:C.ink})+T(157,108,"安裝字體",{a:"middle",fs:9,c:"#fff"})+HL(126,94,62,20),"○○的字"),
 };
+/* 電腦安裝：先選系統，再左右滑（Ashley 2026-11-16） */
+document.querySelectorAll(".ostab .btn").forEach(b=>b.onclick=()=>{document.querySelectorAll(".ostab .btn").forEach(x=>x.classList.toggle("on",x===b));document.querySelectorAll(".car").forEach(c=>c.hidden=c.dataset.os!==b.dataset.os);});
+{const u=navigator.userAgent;if(/Macintosh/.test(u))document.querySelector('.ostab [data-os="mac"]').click();}
+document.querySelectorAll(".car").forEach(car=>{const sl=car.querySelector(".slides"),n=sl.children.length,dots=car.querySelector(".dots");dots.innerHTML="<i></i>".repeat(n);
+  const cur=()=>Math.round(sl.scrollLeft/Math.max(1,sl.clientWidth+12)),upd=()=>{const k=cur();[...dots.children].forEach((d,i)=>d.classList.toggle("on",i===k));};
+  const go=k=>sl.scrollTo({left:Math.max(0,Math.min(n-1,k))*(sl.clientWidth+12),behavior:"smooth"});
+  sl.addEventListener("scroll",()=>{clearTimeout(sl._t);sl._t=setTimeout(upd,60);});car.querySelector(".prev").onclick=()=>go(cur()-1);car.querySelector(".next").onclick=()=>go(cur()+1);upd();});
 document.querySelectorAll("svg[data-img]").forEach(s=>{const k=s.dataset.img;if(IMG[k])s.outerHTML=IMG[k].replace("<svg ",`<svg role="img" aria-label="示意圖" `);});
 </script>
 </body>
