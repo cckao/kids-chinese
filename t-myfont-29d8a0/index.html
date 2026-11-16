@@ -273,7 +273,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
       <p class="note" id="pmInfo" style="margin:6px 0 0"></p>
     </div>
     <textarea id="paperOwn" rows="2" maxlength="600" placeholder="打出想寫的字，例如名字、喜歡的句子" style="margin-top:8px" hidden></textarea>
-        <div class="ovlab" style="margin-top:10px">格子大小</div><div class="seg" id="segPSize"><button class="btn" data-z="b" type="button">低年級<br><small>1.8 公分</small></button><button class="btn" data-z="c" type="button">中高年級<br><small>1.5 公分</small></button><button class="btn" data-z="a" type="button">大人<br><small>1.3 公分</small></button></div>
+        <div class="ovlab" style="margin-top:10px">格子大小</div><div class="seg" id="segPSize"><button class="btn" data-z="b" type="button">低年級<br><small>1.8 公分</small></button><button class="btn" data-z="c" type="button">中高年級<br><small>1.5 公分</small></button><button class="btn" data-z="d" type="button">大人<br><small>1.5 公分・大提示字</small></button></div>
     <div class="ovlab" style="margin-top:10px">要印哪一種</div><div class="seg" id="segPKind"><button class="btn" data-k="blank" type="button">空白版（寫好上傳）</button><button class="btn" data-k="trace" type="button">描紅版（先練習）</button></div>
     <p class="note" id="traceNote" style="margin:6px 0 0" hidden>描紅版只用來練習，<b>不要拍照上傳</b>：描出來的是範字的樣子，不是孩子自己的字。練習好了，再印「空白版」寫自己的字上傳。</p>
     <label class="chk" style="margin-top:8px"><input type="checkbox" id="chkPCross">格子裡加十字虛線（田字格）：<b>彩色列印才勾</b>，黑白列印不要勾</label>
@@ -478,7 +478,7 @@ let TRACE=lsGet("mf-trace",false)===true;
 const NIBDEF={brush:45,pen:30},NIBKEY={brush:"mf-nib4",pen:"mf-nib-pen"};   // 毛筆筆鋒 45°（Ashley 2026-11-16：試過 135° 不好寫，改回原本的 45°；換新名字讓大家回到 45°）
 const NIBS={brush:Math.min(180,Math.max(0,+lsGet("mf-nib4",45))),pen:Math.min(180,Math.max(0,+lsGet("mf-nib-pen",30)))};
 const SIZES=[0,.55,.65,.75,.88,1,1.15,1.3,1.5,1.72,1.95];
-const SIZEDEF={round:7,wob:7,hol:7,chk:5};   // 每支筆刷記住自己的粗細；圓圓筆、抖抖筆、空心筆預設 7（Ashley 2026-11-16）
+const SIZEDEF={round:7,wob:7,hol:7,chk:5,brush:8};   // 每支筆刷記住自己的粗細；圓圓筆、抖抖筆、空心筆預設 7，毛筆 8（Ashley 2026-11-16）
 const sizeOf=b=>Math.min(10,Math.max(1,+lsGet("mf-size-"+b,SIZEDEF[b]||5)||5));
 let SIZE=sizeOf(lsGet("mf-brush","pencil"));
 let BRUSH=lsGet("mf-brush","pencil"),PENONLY=lsGet("mf-pen",false);
@@ -570,7 +570,7 @@ const BR={
   _sq:{name:"方頭",col:"#2b2424",w:30,vary:true,nib:true,round:.8,ang:12,taper:0,hide:true},   // 粉筆用的方形筆頭（不出現在筆刷列表）
   wob:{name:"抖抖筆",col:"#1f1a1a",w:52,vary:true,soft:true,press:true,wob:true},   // 筆頭是凹凸不平的圓，筆畫邊緣微微抖動、頭尾不規則
   pen:{name:"鋼筆",col:"#1c2230",w:26,vary:true,nib:true,round:.72,ang:30,taper:0,bleed:true,cap:.44},   // 細細的鋼筆尖：只有一點點扁，粗細微微變化，頭尾圓（不像方頭螢光筆）
-  brush:{name:"毛筆",col:"#1f1a1a",w:56,vary:true,nib:true,round:.4,ang:45,dry:true,stream:true,tstart:.62,rough:.07}   // 扁的筆鋒有固定方向：同樣的力道，往不同方向寫，粗細不一樣
+  brush:{name:"毛筆",col:"#1f1a1a",w:56,vary:true,nib:true,round:.4,ang:45,stream:true,tstart:.62,rough:.07}   // 全實心、不要飛白（Ashley 2026-11-16）   // 扁的筆鋒有固定方向：同樣的力道，往不同方向寫，粗細不一樣
 };
 if(!BR[BRUSH])BRUSH="pencil";
 /* 毛筆：沿著筆畫一路蓋上「斜放的橢圓筆鋒」（像 Procreate 的形狀筆刷）。筆鋒角度固定，所以橫、豎、撇、捺粗細自然不同；
@@ -708,11 +708,11 @@ function drawChalky(x,g,S,sq){if(!sq&&!g.img)g={s:g.s.map(st=>{const pw=(st.p[0]
   const mk=()=>{const P=(CHKPOOL[N]=CHKPOOL[N]||[]);let c=P[ci++];if(!c){c=document.createElement("canvas");c.width=c.height=N;P.push(c);}const t=c.getContext("2d");t.setTransform(1,0,0,1,0,0);t.globalCompositeOperation="source-over";t.clearRect(0,0,N,N);return c;};   // 畫布重複用，不要每次開新的
   const M=mk(),m=M.getContext("2d");m.scale(N/S,N/S);drawGlyph(m,g,S);m.setTransform(1,0,0,1,0,0);
   const p0=(g.s[0]&&g.s[0].p[0])||[3,5],sd=(Math.round(p0[0]*7+p0[1]*13)%8)+1;   // 每個字的缺口位置不一樣
-  const r=N*.006,E=mk(),e=E.getContext("2d");e.drawImage(M,0,0);e.globalCompositeOperation="destination-in";for(let i=0;i<16;i++){const an=i/16*Math.PI*2;e.drawImage(M,Math.cos(an)*r,Math.sin(an)*r);}
-  const H=mk(),h=H.getContext("2d");h.drawImage(blobMask(.011,.22,sd),0,0,N,N);h.drawImage(blobMask(.006,.16,sd+20),0,0,N,N);h.globalCompositeOperation="destination-in";h.drawImage(blobMask(.07,.58,sd+80),0,0,N,N);   // 不規則：只有一部分區域有毛邊，其他地方比較光滑
-  h.globalCompositeOperation="source-over";h.drawImage(blobMask(.026,.09,sd+60),0,0,N,N);   // 偶爾一個比較大的缺口
+  const r=N*.008,E=mk(),e=E.getContext("2d");e.drawImage(M,0,0);e.globalCompositeOperation="destination-in";for(let i=0;i<16;i++){const an=i/16*Math.PI*2;e.drawImage(M,Math.cos(an)*r,Math.sin(an)*r);}
+  const H=mk(),h=H.getContext("2d");h.drawImage(blobMask(.011,.28,sd),0,0,N,N);h.drawImage(blobMask(.006,.21,sd+20),0,0,N,N);h.globalCompositeOperation="destination-in";h.drawImage(blobMask(.07,.68,sd+80),0,0,N,N);   // 不規則：只有一部分區域有毛邊，其他地方比較光滑
+  h.globalCompositeOperation="source-over";h.drawImage(blobMask(.026,.12,sd+60),0,0,N,N);   // 偶爾一個比較大的缺口
   h.globalCompositeOperation="destination-out";h.drawImage(E,0,0);   // 只在邊緣那一圈挖缺口（Ashley 2026-11-16：吃掉太多 → 改小、改少）
-  const C=mk(),c=C.getContext("2d");c.drawImage(blobMask(.007,.008,sd+40),0,0,N,N);c.globalCompositeOperation="destination-in";c.drawImage(E,0,0);   // 裡面小白點
+  const C=mk(),c=C.getContext("2d");c.drawImage(blobMask(.006,.03,sd+40),0,0,N,N);c.globalCompositeOperation="destination-in";c.drawImage(E,0,0);   // 裡面小白點
   m.globalCompositeOperation="destination-out";m.drawImage(H,0,0);m.drawImage(C,0,0);x.drawImage(M,0,0,S,S);}
 let TFX=lsGet("mf-tfx",HOL?"hollow":"none");let FFX=lsGet("mf-ffx","none");   // 字型效果   // 字的效果：none／hollow 空心／chalk 粉筆
 function drawEff(x,g,S,fx){return fx==="hollow"?drawHollow(x,g,S):fx==="chalk"?drawChalky(x,g,S):drawGlyph(x,g,S);}
@@ -1344,7 +1344,7 @@ const PG={W:210,H:297,MK:[[14,14],[196,14],[196,283],[14,283]],MS:8,COLS:8,CELL:
 const SPARE="＿";   // 空白補寫格：寫錯的字可以寫在這裡，匯入時自己打是什麼字
 function LAY(first){return first?PG.L1:PG.L2;}
 /* 稿紙版（KCMF5，Ashley 2026-11-16：省紙、像稿紙）：格子一個貼一個，每一排上面一條細細的提示列印範字；第一頁才有表頭和 QR，之後只有頁尾的小黑點（第幾份的第幾頁） */
-const GZ={b:{cell:18,cols:9,x0:24,hint:4.5,name:"低年級"},c:{cell:15,cols:11,x0:22.5,hint:4,name:"中高年級"},a:{cell:13,cols:13,x0:20.5,hint:3.5,name:"大人"}},GZY={first:47,rest:22,end:278},GZQR=[150,6,34],GZMAX=300;
+const GZ={b:{cell:18,cols:9,x0:24,hint:4.5,name:"低年級"},c:{cell:15,cols:11,x0:22.5,hint:4,name:"中高年級"},a:{cell:13,cols:13,x0:20.5,hint:3.5,name:"大人",old:1},d:{cell:15,cols:11,x0:22.5,hint:6,name:"大人"}},GZY={first:47,rest:22,end:278},GZQR=[159,6,25],GZQR0=[150,6,34],GZMAX=300;   // 大人改成 1.5 公分格子、提示字放大（Ashley 2026-11-16：1.3 公分和提示字太小）；QR 3.4→2.5 公分。舊的 a 版面、3.4 公分 QR 只留著讀以前印的稿紙
 function gzRows(lt,first){const L=GZ[lt];return Math.floor((GZY.end-(first?GZY.first:GZY.rest))/(L.cell+L.hint));}
 function gzCap(lt,first){return GZ[lt].cols*gzRows(lt,first);}
 function gzXY(lt,i,first){const L=GZ[lt],c=i%L.cols,r=Math.floor(i/L.cols);return [L.x0+c*L.cell,(first?GZY.first:GZY.rest)+r*(L.cell+L.hint)+L.hint];}
@@ -1399,12 +1399,12 @@ async function drawSheetGZ(pg,no,np,title,trace){const K=6,cv=document.createEle
     else{x.fillText("用鉛筆（2B 以上）或細字筆寫在紅框裡，不要用粗筆。寫錯了打 X，再寫到最後面的「補寫」格。",22,38.5);x.fillText("拍照或用「備忘錄」掃描（濾鏡選彩色），四個黑色方塊都要拍進去。",22,42.5);}}
   if(!trace){const [bx,by,bw,bh]=pg.first?DATEBOX.first:DATEBOX.rest;x.fillStyle="#534545";x.font='400 3.4px "Noto Sans TC",sans-serif';x.fillText("日期：",bx,by+bh-2);
     x.strokeStyle="#8a7b7b";x.lineWidth=.25;x.beginPath();x.moveTo(bx+10,by+bh-1.6);x.lineTo(bx+bw,by+bh-1.6);x.stroke();
-    if(!pg.first){x.fillStyle="#8a7b7b";x.font='400 2.8px "Noto Sans TC",sans-serif';x.fillText(`我的手寫字 練習紙　第 ${no}／${np} 張`,22,by+bh-2);}}
+    }   // 第 2 頁以後只留日期欄和頁碼（Ashley 2026-11-16）
   pg.cs.forEach((c,i)=>{const [cx,cy]=gzXY(pg.lt,i,trace?true:pg.first);
     const tag=pg.tags&&pg.tags[i];
     if(tag){const fs=Math.min(L.hint*.55,(L.cell*.62)/[...tag].length);x.font=`700 ${fs}px "Noto Sans TC",sans-serif`;const tw=x.measureText(tag).width+1;
       x.fillStyle="#fbe94e";x.fillRect(cx+.3,cy-L.hint+.5,tw,L.hint-1);x.fillStyle="#534545";x.fillText(tag,cx+.8,cy-L.hint/2+fs*.36);}
-    if(c!==SPARE){const mc=document.createElement("canvas"),hs=L.hint*.86;mc.width=mc.height=60;drawModel(mc.getContext("2d"),c,60,"#8a7b7b");x.drawImage(mc,tag?cx+L.cell-hs-.6:cx+L.cell/2-hs/2,cy-L.hint+(L.hint-hs)/2,hs,hs);   // 提示列：範字放在格子正上方（有段落標籤時靠右）
+    if(c!==SPARE){const mc=document.createElement("canvas"),hs=L.hint*.86;mc.width=mc.height=60;drawModel(mc.getContext("2d"),c,60,"#534545");x.drawImage(mc,tag?cx+L.cell-hs-.6:cx+L.cell/2-hs/2,cy-L.hint+(L.hint-hs)/2,hs,hs);   // 提示列：範字放在格子正上方（有段落標籤時靠右）
       if(trace){const tc=document.createElement("canvas");tc.width=tc.height=240;drawModel(tc.getContext("2d"),c,240,"#cfc4c4");x.drawImage(tc,cx,cy,L.cell,L.cell);}}
     else{x.fillStyle="#8a7b7b";x.font=`400 ${L.hint*.6}px "Noto Sans TC",sans-serif`;x.textAlign="center";x.fillText("補寫",cx+L.cell/2,cy-L.hint*.28);x.textAlign="left";}
     if(trace){x.strokeStyle="#f0b3aa";x.lineWidth=.22;x.setLineDash([.9,.8]);x.beginPath();x.moveTo(cx+L.cell/2,cy);x.lineTo(cx+L.cell/2,cy+L.cell);x.moveTo(cx,cy+L.cell/2);x.lineTo(cx+L.cell,cy+L.cell/2);x.stroke();x.setLineDash([]);}   // 描紅版不用辨識，可以有十字線
@@ -1412,7 +1412,7 @@ async function drawSheetGZ(pg,no,np,title,trace){const K=6,cv=document.createEle
     x.strokeStyle="#e8604c";x.lineWidth=.35;x.strokeRect(cx,cy,L.cell,L.cell);
     // 提示列的外框（淡）
     x.strokeStyle="#f3c9c2";x.lineWidth=.2;x.strokeRect(cx,cy-L.hint,L.cell,L.hint);});
-  x.fillStyle="#8a7b7b";x.font='400 2.8px "Noto Sans TC",sans-serif';x.textAlign="center";x.fillText(`第 ${no}／${np} 張　國語生字學習站・我的手寫字`,105,291);x.textAlign="left";
+  x.fillStyle="#8a7b7b";x.font='400 2.8px "Noto Sans TC",sans-serif';x.textAlign="center";x.fillText(pg.first||trace?`第 ${no}／${np} 張　國語生字學習站・我的手寫字`:`第 ${no}／${np} 張`,105,291);x.textAlign="left";
   return cv;}
 async function drawSheet(pg,no,np,title){const K=6,cv=document.createElement("canvas");cv.width=PG.W*K;cv.height=PG.H*K;const x=cv.getContext("2d"),L=LAY(pg.first);
   x.fillStyle="#fff";x.fillRect(0,0,cv.width,cv.height);x.scale(K,K);
@@ -1474,11 +1474,11 @@ function presetSel(lv){const CC=comCats(),idx=re=>CC.map((c,i)=>re.test(c.n)&&!c
   return {v:Object.keys(VN),s:SEMS.map((_,i)=>i),c:lv===1?idx(/^(注音符號|標點符號)/):lv===2?idx(/^(注音符號|標點符號|常見國字)/):CC.map((c,i)=>c.segs?-1:i).filter(i=>i>=0)};}
 $("pmPre").onclick=e=>{const b=e.target.closest("button");if(!b)return;const lv=+b.dataset.p,P=presetSel(lv);
   PMV=P.v;PMS=P.s;PMC=P.c;   // 大人建議：分三階段（Ashley 2026-11-16）
-  $("chkPaperNew").checked=true;lsSet("mf-pmv",PMV);lsSet("mf-pms",PMS);lsSet("mf-pmc",PMC);if(PSIZE!=="a"){PSIZE="a";lsSet("mf-psize2",PSIZE);}buildPaperSeg();toast("選好了：格子改成大人（1.3 公分），按「印出練習紙」");};
+  $("chkPaperNew").checked=true;lsSet("mf-pmv",PMV);lsSet("mf-pms",PMS);lsSet("mf-pmc",PMC);if(PSIZE!=="d"){PSIZE="d";lsSet("mf-psize2",PSIZE);}buildPaperSeg();toast("選好了：格子改成大人（1.5 公分），按「印出練習紙」");};
 $("pmCat").onclick=e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.c;PMC=PMC.includes(i)?PMC.filter(x=>x!==i):[...PMC,i].sort((a,c)=>a-c);lsSet("mf-pmc",PMC);buildPM();};
 $("pmVer").onclick=e=>{const b=e.target.closest("button");if(!b)return;const v=b.dataset.v;PMV=PMV.includes(v)?PMV.filter(x=>x!==v):Object.keys(VN).filter(x=>x===v||PMV.includes(x));lsSet("mf-pmv",PMV);buildPM();};
 $("pmSem").onclick=e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.i;PMS=PMS.includes(i)?PMS.filter(x=>x!==i):[...PMS,i].sort((a,c)=>a-c);lsSet("mf-pms",PMS);buildPM();};
-let PSIZE=lsGet("mf-psize2","b"),PKIND=lsGet("mf-pkind","blank");if(!GZ[PSIZE])PSIZE="b";
+let PSIZE=lsGet("mf-psize2","b"),PKIND=lsGet("mf-pkind","blank");if(PSIZE==="a")PSIZE="d";if(!GZ[PSIZE]||GZ[PSIZE].old)PSIZE="b";
 function buildPaperSeg(){[...$("segPaper").children,$("btnPMulti")].forEach(b=>b.classList.toggle("on",b.dataset.r===PRANGE));$("pMulti").hidden=PRANGE!=="multi";buildPM();$("paperOwn").hidden=PRANGE!=="own";
   [...$("segPSize").children].forEach(b=>b.classList.toggle("on",b.dataset.z===PSIZE));[...$("segPKind").children].forEach(b=>b.classList.toggle("on",b.dataset.k===PKIND));
   $("traceNote").hidden=PKIND!=="trace";$("btnPaper").textContent=PKIND==="trace"?"印出描紅練習紙（PDF）":"印出練習紙（PDF）";}
@@ -1606,7 +1606,7 @@ async function readSheet(src){   // src：Image 或 canvas；回傳 {no,np,cells
   const S=sampler(src),Jq=await loadScript("https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js","jsQR");
   let H=null,txt=null;
   for(const mk of mks)for(let rot=0;rot<4&&!txt;rot++){if(txt)break;const q=[0,1,2,3].map(i=>mk[(i+rot)%4]),h=homog(PG.MK,q);
-    for(const L of [{qr:GZQR},PG.L1,PG.L2]){const [qx,qy,qs]=L.qr,K=Math.round(300/qs),pad=3,N=Math.round((qs+pad*2)*K),data=new Uint8ClampedArray(N*N*4);
+    for(const L of [{qr:GZQR},{qr:GZQR0},PG.L1,PG.L2]){const [qx,qy,qs]=L.qr,K=Math.round(300/qs),pad=3,N=Math.round((qs+pad*2)*K),data=new Uint8ClampedArray(N*N*4);
       for(let j=0;j<N;j++)for(let i=0;i<N;i++){const [u,v]=h(qx-pad+i/K,qy-pad+j/K),p=S(u,v),o=(j*N+i)*4;data[o]=p[0];data[o+1]=p[1];data[o+2]=p[2];data[o+3]=255;}
       const r=Jq(data,N,N);if(!r)continue;
       if(r.data&&/^KCMF[23]\|/.test(r.data)){txt=r.data;H=h;break;}
@@ -1770,7 +1770,7 @@ function renderImps(){const w=$("impWrap");if(!w)return;w.hidden=!IMPS.length;co
     L.appendChild(el);}}
 
 /* ---------- 介面文字加注音：字型自帶注音，多音字用 ssNN 換讀音（PW：語詞 → [[第幾個字, 第幾個讀音]]） ---------- */
-const PW={"幾個":[[1,1]],"名字":[[1,1]],"下載":[[1,1]],"空白":[[0,1]],"尾巴":[[1,1]],"奶奶":[[1,1]],"妹妹":[[1,1]],"重新":[[0,1]],"個子":[[1,1]],"鼻子":[[1,1]],"石頭":[[1,1]],"音樂":[[1,1]],"唱反調":[[2,1]],"一行":[[1,1]],"這個":[[1,1]],"句子":[[1,1]],"兔子":[[1,1]],"樣子":[[1,1]],"聲調":[[1,1]],"孩子":[[1,1]],"格子":[[1,1]],"一部分":[[2,1]],"重寫":[[0,1]],"樂師":[[0,1]],"少年":[[0,1]],"有空":[[1,1]],"媽媽":[[1,1]],"間隔":[[0,1]],"還原":[[0,1]],"重複":[[0,1]],"當成":[[0,1]],"一個":[[1,1]],"成長":[[1,1]],"橘子":[[1,1]],"大個子":[[2,1]],"多重":[[1,1]],"呱呱":[[0,2],[1,2]],"唉呀":[[1,1]],"相鄰":[[0,1]],"交響樂":[[2,1]],"爸爸":[[1,1]],"衣裳":[[1,1]],"的當":[[0,1],[1,1]],"記得":[[1,1]],"影子":[[1,1]],"馬偕":[[1,1]],"哥哥":[[1,1]],"鞋子":[[1,1]],"為什麼":[[0,1]],"春華":[[1,1]],"重拍":[[0,1]],"著地":[[0,4]],"哪個":[[1,1]],"喝采":[[0,1]],"部分":[[1,1]],"伯伯":[[1,1]],"幾乎":[[0,1]],"鴨子":[[1,1]],"葉子":[[1,1]],"為何":[[0,1]],"更新":[[0,1]],"婆婆":[[1,1]],"泡泡":[[0,1],[1,1]],"本分":[[1,1]],"接縫":[[1,1]],"長大":[[0,1]],"梯子":[[1,1]],"重疊":[[0,1]],"木頭":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
+const PW={"少年":[[0,1]],"奶奶":[[1,1]],"爸爸":[[1,1]],"空白":[[0,1]],"媽媽":[[1,1]],"音樂":[[1,1]],"下載":[[1,1]],"重寫":[[0,1]],"呱呱":[[0,2],[1,2]],"為什麼":[[0,1]],"句子":[[1,1]],"一個":[[1,1]],"影子":[[1,1]],"格子":[[1,1]],"這個":[[1,1]],"喝采":[[0,1]],"名字":[[1,1]],"一部分":[[2,1]],"重新":[[0,1]],"當成":[[0,1]],"樂師":[[0,1]],"衣裳":[[1,1]],"鞋子":[[1,1]],"幾個":[[1,1]],"長大":[[0,1]],"重複":[[0,1]],"石頭":[[1,1]],"相鄰":[[0,1]],"兔子":[[1,1]],"成長":[[1,1]],"木頭":[[1,1]],"孩子":[[1,1]],"的當":[[0,1],[1,1]],"本分":[[1,1]],"部分":[[1,1]],"一行":[[1,1]],"間隔":[[0,1]],"伯伯":[[1,1]],"交響樂":[[2,1]],"尾巴":[[1,1]],"幾乎":[[0,1]],"唉呀":[[1,1]],"樣子":[[1,1]],"春華":[[1,1]],"哪個":[[1,1]],"鴨子":[[1,1]],"有空":[[1,1]],"梯子":[[1,1]],"接縫":[[1,1]],"記得":[[1,1]],"重拍":[[0,1]],"哥哥":[[1,1]],"橘子":[[1,1]],"著地":[[0,4]],"多重":[[1,1]],"聲調":[[1,1]],"鼻子":[[1,1]],"更新":[[0,1]],"葉子":[[1,1]],"泡泡":[[0,1],[1,1]],"馬偕":[[1,1]],"妹妹":[[1,1]],"個子":[[1,1]],"為何":[[0,1]],"大個子":[[2,1]],"婆婆":[[1,1]],"重疊":[[0,1]],"唱反調":[[2,1]],"還原":[[0,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
 let ZYON=lsGet("mf-zy2",false)===true;   // 預設不加注音（Ashley 2026-11-15：使用者是大人），想要的人按右上角「注音」打開
 function zyMark(root){if(!PWRE||!ZYON)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|OPTION|CANVAS)$/.test(p.nodeName)||p.dataset&&p.dataset.zy||!/[\u4e00-\u9fff]/.test(n.nodeValue))return NodeFilter.FILTER_REJECT;PWRE.lastIndex=0;return PWRE.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
   const L=[];while(w.nextNode())L.push(w.currentNode);
