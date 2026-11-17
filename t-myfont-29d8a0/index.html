@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-Hant">
-<head><meta name="robots" content="noindex,nofollow">
+<head><meta name="robots" content="noindex">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>寫寫字 試用版・寫一套自己的字體</title>
@@ -87,9 +87,9 @@ h2{font-size:15px;margin:0 0 8px}
 .tag{display:inline-block;font:500 10px "IBM Plex Mono",monospace;letter-spacing:.12em;padding:2px 8px;border-radius:999px;background:var(--y);margin-bottom:6px}
 /* 每個區塊的小標用不同孔版色（Ashley 2026-11-17：不要都是黃） */
 .tag.t-yellow{background:#fbe94e}.tag.t-mint{background:#96d6d4}.tag.t-pink{background:#f7a8dd}.tag.t-orange{background:#ffb27d}.tag.t-blue{background:#a9c3f2}.tag.t-purple{background:#cdb8ef}.tag.t-green{background:#b9e09a}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:20;max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 16px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:80;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
-.ov{position:fixed;inset:0;background:rgba(40,30,30,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.ov{position:fixed;inset:0;background:rgba(40,30,30,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
 .ov.show{display:flex}
 .ovc{background:#fff;border-radius:22px;max-width:420px;width:100%;padding:20px 18px 16px;text-align:center;max-height:92vh;overflow:auto}
 .ovc .big{font-size:22px;font-weight:700;margin:6px 0 4px}
@@ -120,7 +120,7 @@ body.zy #segMode{display:grid;grid-template-columns:1fr 1fr}body.zy #segMode .bt
 .lib-btn{width:100%;margin-top:10px}
 #segMode .btn{white-space:nowrap;padding:8px 2px;min-width:0}@media (max-width:520px){#segMode .btn{font-size:13px}}   /* 五個按鈕排一排不斷行 */
 .pmsem{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.pmsem .btn{padding:7px 2px;font-size:14px}
-.lib{position:fixed;inset:0;z-index:15;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lib{position:fixed;inset:0;z-index:55;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .lib-top{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 0 10px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);max-width:600px;margin:0 auto}
 .lib-t{font-size:18px}
 #libBody{max-width:600px;margin:0 auto}
@@ -216,6 +216,18 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
 .mftabs button:last-child{width:100%;padding-right:2px}
 .mftabs button:nth-child(1){z-index:1}.mftabs button:nth-child(2){z-index:2}.mftabs button:nth-child(3){z-index:3}.mftabs button:nth-child(4){z-index:4}.mftabs button:nth-child(5){z-index:5}.mftabs button:nth-child(6){z-index:6}
 .mftabs button.on{z-index:10;width:100%;padding-right:2px;background:var(--ink);color:#fff;font-weight:700;font-size:14px;margin-bottom:-4px;height:50px}
+/* 電腦版（寬螢幕）排版：寫字分頁左邊田字格、右邊設定；其他分頁兩欄（Ashley 2026-11-17） */
+@media (min-width:1100px){
+  .wrap{max-width:1180px}
+  .mffolder{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:16px;align-items:start;padding:16px 16px 6px}
+  .mffolder>.card{grid-column:auto;min-width:0}
+  .mffolder[data-cur="write"]{grid-template-columns:minmax(0,1fr) 420px}
+  .mffolder[data-cur="write"]>.card{grid-column:2}
+  .mffolder[data-cur="write"]>.wmain{grid-column:1;grid-row:1/span 6}
+  .mffolder[data-cur="paper"]>.card,.mffolder[data-cur="ig"]>.card{grid-column:1/-1;width:100%;max-width:860px;justify-self:center}
+  .mffolder[data-cur="type"]>#tpCard{grid-column:1;grid-row:1/span 3}
+  .mffolder[data-cur="type"]>#fontCard,.mffolder[data-cur="type"]>#howto{grid-column:2}
+}
 @media (max-width:380px){.mftabs button{font-size:12px}.mftabs button.on{font-size:13px}}
 .prog3{display:grid;gap:4px;margin:2px 0 8px}.prog3 .pg{display:grid;grid-template-columns:84px 1fr 38px 70px;align-items:center;gap:6px;font-size:12px;color:var(--soft)}
 .prog3 .pg span{color:var(--ink)}.prog3 .pg i{height:6px;border-radius:3px;background:#eee6e2;overflow:hidden}.prog3 .pg b{display:block;height:100%;background:var(--m)}.prog3 .pg em{font-style:normal;font-weight:700;color:var(--ink);text-align:right}.prog3 .pg small{font-size:11px}
@@ -225,6 +237,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
 .qout button canvas{width:48px;height:48px}.qout button .qn{font-size:32px;line-height:48px;height:48px;color:var(--todo);font-family:"Noto Sans TC",sans-serif}.qout button.no{border-color:#f0c4bd;background:#fff8f6}.qout button.no em{color:var(--todo);font-style:normal;font-weight:700}
 .ppick{margin-top:6px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fff}.ppick select{font-size:15px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff}
 .psel{display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border-radius:12px;background:var(--bg);font-size:13px;color:var(--soft)}.psel span{flex:1;min-width:0}.psel b{color:var(--ink)}
+.cbgrid{display:flex;flex-wrap:wrap;gap:4px;max-height:34vh;overflow:auto;padding:6px;border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:6px}.cbgrid canvas{border:1px solid #f1e8e4;border-radius:6px;flex:0 0 auto;max-width:none!important}
 .mffoot{text-align:center;color:var(--soft);font-size:13px;margin:18px 0 10px;line-height:1.8}.mffoot a{color:var(--soft)}
 .privp h3{font-size:15px;margin:14px 0 4px}.privp p{font-size:14px;line-height:1.75;margin:0 0 6px}
 .uses figure{margin:0}.uses canvas{width:100%;aspect-ratio:16/10;display:block;border-radius:12px;border:1px solid var(--line)}.uses figcaption{font-size:13px;color:var(--soft);margin-top:6px;line-height:1.5}.uses figcaption b{color:var(--ink);margin-right:4px}
@@ -280,7 +293,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
     </div>
   </div>
 
-  <div class="card" data-tab="write">
+  <div class="card wmain" data-tab="write">
     <div class="strip" id="strip"></div>
     <div class="now" id="now"></div>
     <div class="prog3" id="prog3"></div>
@@ -408,7 +421,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
     <div class="seg" id="tlRange" style="display:grid;grid-template-columns:repeat(4,1fr)"><button class="btn sm" data-r="today" type="button">今天寫的</button><button class="btn sm" data-r="day" type="button">選一天</button><button class="btn sm" data-r="all" type="button">全部</button><button class="btn sm" data-r="own" type="button">自己打字</button></div>
     <input type="date" id="tlDate" hidden style="margin-top:8px;font-size:16px;padding:6px 10px;border:1px solid var(--line);border-radius:10px">
     <textarea id="tlTxt" rows="2" maxlength="200" hidden placeholder="打出要放進影片的字（寫過的字才會出現）" style="width:100%;box-sizing:border-box;margin-top:8px;font-size:16px;padding:8px;border:1px solid var(--line);border-radius:10px"></textarea>
-    <div class="row" style="margin-top:8px"><span class="lab">長度</span><div class="seg" id="tlSec" style="flex:1"><button class="btn sm" data-v="15" type="button">15 秒</button><button class="btn sm" data-v="30" type="button">30 秒</button><button class="btn sm" data-v="60" type="button">60 秒</button></div></div>
+    <div class="row" style="margin-top:8px"><span class="lab">長度</span><div class="seg" id="tlSec" style="flex:1"><button class="btn sm" data-v="10" type="button">10 秒</button><button class="btn sm" data-v="15" type="button">15 秒</button><button class="btn sm" data-v="30" type="button">30 秒</button><button class="btn sm" data-v="60" type="button">60 秒</button></div></div>
     <div class="ovlab" style="margin-top:8px">尺寸（IG 建議的長寬比）</div><div class="seg" id="tlSize" style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px"><button class="btn sm" data-v="v" type="button">限動・Reels<br><small>9:16（1080×1920）</small></button><button class="btn sm" data-v="p45" type="button">貼文直式<br><small>4:5（1080×1350）</small></button><button class="btn sm" data-v="p34" type="button">貼文直式<br><small>3:4（1080×1440）</small></button><button class="btn sm" data-v="s" type="button">貼文正方形<br><small>1:1（1080×1080）</small></button></div>
     <p class="note" style="margin:4px 0 0;font-size:12px">限動和 Reels 用 9:16 最滿版；貼文用 4:5 在動態裡最大，個人頁格子會切成 3:4，想讓格子看起來完整就選 3:4。</p>
     <div class="row" style="margin-top:6px"><span class="lab">格子</span><div class="seg" id="tlGrid" style="flex:1"><button class="btn sm" data-v="1" type="button">田字格</button><button class="btn sm" data-v="0" type="button">空白</button></div></div>
@@ -430,7 +443,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
     <div class="caldetail" id="calDetail"></div>
   </div>
 
-  <div class="card" data-tab="cal">
+  <div class="card" id="mineCard" data-tab="cal">
     <h2>我寫過的字</h2>
     <div class="mine" id="mine"></div>
   </div>
@@ -933,7 +946,7 @@ function drawModel(x,c,S,col){if(isLat(c))return drawLatModel(x,c,S,col);const o
 /* ---------- 田字格 ---------- */
 let S=320,bx,ix,ax;
 let GSZ=[.7,.85,1].includes(+lsGet("mf-gsz",1))?+lsGet("mf-gsz",1):1;
-function layout(){const cw=document.documentElement.clientWidth,gut=cw<500?34:48,vw=Math.min(cw,600)-32-26-gut*2;   // 田字格左右留空白，手指在空白處滑動才是捲動頁面
+function layout(){const cw=document.documentElement.clientWidth,gut=cw<500?34:48,vw=(cw>=1100?Math.min(cw-500,760):Math.min(cw,600))-32-26-gut*2;   // 田字格左右留空白，手指在空白處滑動才是捲動頁面
   S=Math.floor(Math.max(200,Math.min(vw,520,window.innerHeight-250)*GSZ));   // 田字格大小可以調（Ashley 2026-11-17：iPad 上太大不好寫）
   const st=$("stage");st.style.width=st.style.height=S+"px";
   bx=fitCanvas($("cvBg"),S,S);ix=fitCanvas($("cvInk"),S,S);ax=fitCanvas($("cvAnim"),S,S);paintBg();paintInk();}
@@ -1723,20 +1736,32 @@ $("btnCopyBrush").onclick=()=>{const n=Object.keys(MEM).filter(c=>hasInk(MEM[c])
   const ks=Object.keys(BR).filter(k=>!BR[k].hide);let pick=ks.find(k=>k!==brushStats&&k!=="pencil")||ks[0];
   showOv(`<div class="big">複製成另一套筆刷</div><div class="msg">把「${esc(FNAME())}」的 ${n} 個字，照同樣的筆畫換成別的筆刷，另存成一套新字體。原本這套不會變。</div>
     <div class="ovlab">要換成哪一支筆</div><div class="seg" id="cbBr" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${ks.map(k=>`<button class="btn sm" data-b="${k}" type="button">${esc(BR[k].name)}</button>`).join("")}</div>
+    <div class="size" style="margin-top:8px"><label for="cbW">粗細</label><input type="range" id="cbW" min="60" max="160" step="5" value="100"><b id="cbWV" style="width:48px">100%</b></div>
+    <div class="size" style="margin-top:4px"><label for="cbZ">預覽大小</label><input type="range" id="cbZ" min="36" max="140" step="4" value="56"><b id="cbZV" style="width:48px"></b></div>
+    <div id="cbGrid" class="cbgrid"></div>
+    <p class="note" style="margin:4px 0 0;font-size:12px">快速轉換是照你寫的筆畫自動重畫，大部分的字可以直接用，<b>少數筆畫多、空隙小的字可能會有些許誤差</b>（擠在一起或線條不順）。建立以後，點字就能進去單獨重寫或微調，只要修那幾個字，不用整套重寫。</p>
     <label class="ovlab" for="cbName">新字體名稱</label><input class="ovin" id="cbName" type="text" maxlength="20">
     <p class="note" style="margin:4px 0 0">用「原本的字」（照片原稿）匯入的字，會照原稿的中心線重畫。</p>
     <div class="acts"><button class="btn p" id="ovYes" type="button">開始複製</button><button class="btn" id="ovOk" type="button">取消</button></div>`);
-  const sync=()=>{[...$("cbBr").children].forEach(b=>b.classList.toggle("on",b.dataset.b===pick));$("cbName").value=`${FNAME()} ${BR[pick].name}`;};sync();
+  let cw=100;const conv=(g,f)=>{let s=null;if(g.s&&g.s.length)s=g.s.map(t=>({...t,b:pick,m:f,...(BR[pick].nib?{a:NIBS[pick]??BR[pick].ang}:{}),p:t.p.map(q=>[q[0],q[1],BR[pick].w])}));
+      else if(g.src&&g.src.sk&&g.src.sk.length){s=skelStrokes(g.src.sk,pick).map(t=>({...t,m:(t.m||1)*f}));const dx=g.ix||0,dy=g.iy||0;for(const t of s)for(const q of t.p){q[0]+=dx;q[1]+=dy;}}return s;};
+  let cz=56;const all=Object.keys(MEM).filter(c=>hasInk(MEM[c])).sort((a,b)=>(MEM[a].f||0)-(MEM[b].f||0));
+  const prev=()=>{clearTimeout(prev.t);prev.t=setTimeout(()=>{const g=$("cbGrid");if(!g)return;$("cbZV").textContent=cz+"px";g.innerHTML=all.slice(0,300).map(c=>`<canvas title="${esc(c)}"></canvas>`).join("");   // 全部的字（最多 300 個）照選的筆刷、粗細畫出來，可以放大縮小看（Ashley 2026-11-17）
+    [...g.children].forEach((cv,i)=>{const c=all[i],x=fitCanvas(cv,cz,cz),s=conv(MEM[c],cw/100);cv.style.width=cv.style.height=cz+"px";if(s)drawGlyph(x,{s},cz);});},80);};
+  const sync=()=>{[...$("cbBr").children].forEach(b=>b.classList.toggle("on",b.dataset.b===pick));$("cbName").value=`${FNAME()} ${BR[pick].name}`;$("cbWV").textContent=cw+"%";prev();};sync();
+  $("cbW").oninput=e=>{cw=+e.target.value;$("cbWV").textContent=cw+"%";prev();};$("cbZ").oninput=e=>{cz=+e.target.value;prev();};
   $("cbBr").onclick=e=>{const b=e.target.closest("button");if(!b)return;pick=b.dataset.b;sync();};$("ovOk").onclick=hideOv;
   $("ovYes").onclick=async()=>{const name=$("cbName").value.trim()||`${FNAME()} ${BR[pick].name}`;const src={};for(const [c,g] of Object.entries(MEM))if(hasInk(g))src[c]=JSON.parse(JSON.stringify(g));hideOv();toast("正在複製…");
-    const out={};for(const [c,g] of Object.entries(src)){let s=null;
-      if(g.s&&g.s.length)s=g.s.map(t=>({...t,b:pick,m:1,...(BR[pick].nib?{a:NIBS[pick]??BR[pick].ang}:{}),p:t.p.map(q=>[q[0],q[1],BR[pick].w])}));   // 照原本的中心線、換筆刷、用新筆刷的標準粗細
-      else if(g.src&&g.src.sk&&g.src.sk.length){s=skelStrokes(g.src.sk,pick);const dx=g.ix||0,dy=g.iy||0;for(const t of s)for(const q of t.p){q[0]+=dx;q[1]+=dy;}}
+    const out={};for(const [c,g] of Object.entries(src)){const s=conv(g,cw/100);   // 照原本的中心線、換筆刷、用選的粗細（Ashley 2026-11-17：要能調粗細）
       if(!s)continue;out[c]={s,f:g.f,d:g.d,src:g.src};}
-    newKidRaw(name,name);for(const [c,g] of Object.entries(out)){MEM[c]=g;saveGlyph0(c);}buildTop();await loadKid();toast(`複製好了：「${name}」${Object.keys(out).length} 個字（${BR[pick].name}）`);};};
+    newKidRaw(name,name);for(const [c,g] of Object.entries(out)){MEM[c]=g;saveGlyph0(c);}buildTop();await loadKid();
+    const cs=Object.keys(out);showOv(`<div class="big">「${esc(name)}」做好了</div><div class="msg">${cs.length} 個字換成${esc(BR[pick].name)}。看到不理想的字，<b>點一下就能進去重寫或微調</b>（只改這一套，不影響原本那套）。</div>
+      <div class="cbgrid" id="cbDone" style="max-height:46vh"></div><div class="acts"><button class="btn p" id="ovOk" type="button">好</button></div>`);
+    const g=$("cbDone");g.innerHTML=cs.map(c=>`<canvas data-c="${esc(c)}" title="${esc(c)}" style="cursor:pointer"></canvas>`).join("");[...g.children].forEach(cv=>{const x=fitCanvas(cv,56,56);cv.style.width=cv.style.height="56px";drawGlyph(x,MEM[cv.dataset.c],56);});
+    g.onclick=e=>{const cv=e.target.closest("canvas[data-c]");if(!cv)return;hideOv();jumpTo(cv.dataset.c);};$("ovOk").onclick=hideOv;};};
 /* ---------- 分頁（Ashley 2026-11-17：網頁太長）：寫字／紙上寫／IG 圖／動圖／寫字日曆／試打、下載；記住上次在哪一頁 ---------- */
 let TAB=lsGet("mf-tab","write");
-function goTab(t,noScroll){if(!document.querySelector(`[data-tab="${t}"]`))t="write";const ch=TAB!==t;TAB=t;lsSet("mf-tab",t);
+function goTab(t,noScroll){if(!document.querySelector(`[data-tab="${t}"]`))t="write";const ch=TAB!==t;TAB=t;lsSet("mf-tab",t);$("mfFolder").dataset.cur=t;
   document.querySelectorAll("[data-tab]").forEach(c=>c.hidden=c.dataset.tab!==t);[...$("mfTabs").children].forEach(b=>b.classList.toggle("on",b.dataset.t===t));
   try{if(t==="paper")updPSel();if(t==="write")layout();if(t==="ig")paintPrev();if(t==="gif"){$("txtGif").value=$("txt").value;runGifPrev();tlPreview(false);}if(t==="type"){tpRender();renderUses();}if(t==="cal"){renderCal();renderMine();}}catch(e){}
   if(ch&&!noScroll){const top=$("mfTabs").getBoundingClientRect().top+scrollY;if(scrollY>top)scrollTo({top,behavior:"auto"});}}
@@ -2401,7 +2426,7 @@ function renderImps(){const w=$("impWrap");if(!w)return;w.hidden=!IMPS.length;co
     L.appendChild(el);}}
 
 /* ---------- 介面文字加注音：字型自帶注音，多音字用 ssNN 換讀音（PW：語詞 → [[第幾個字, 第幾個讀音]]） ---------- */
-const PW={"空隙":[[0,1]],"格子":[[1,1]],"這個":[[1,1]],"唱反調":[[2,1]],"名字":[[1,1]],"寒假":[[1,1]],"句子":[[1,1]],"樣子":[[1,1]],"鞋子":[[1,1]],"一個":[[1,1]],"大個子":[[2,1]],"校正":[[0,1]],"下載":[[1,1]],"少年":[[0,1]],"假日":[[0,1]],"家長":[[1,1]],"一行":[[1,1]],"個子":[[1,1]],"幾個":[[1,1]],"奶奶":[[1,1]],"重播":[[0,1]],"暑假":[[1,1]],"行距":[[0,1]],"尾巴":[[1,1]],"相反":[[0,1]],"木頭":[[1,1]],"的當":[[0,1],[1,1]],"當機":[[0,1]],"了解":[[0,1]],"互相":[[1,1]],"空白":[[0,1]],"分行":[[1,1]],"謝謝":[[1,1]],"泡泡":[[0,1],[1,1]],"多重":[[1,1]],"重新":[[0,1]],"間隔":[[0,1]],"伯伯":[[1,1]],"有空":[[1,1]],"交響樂":[[2,1]],"記得":[[1,1]],"更新":[[0,1]],"還原":[[0,1]],"鼻子":[[1,1]],"喝采":[[0,1]],"重複":[[0,1]],"哥哥":[[1,1]],"成長":[[1,1]],"媽媽":[[1,1]],"音樂":[[1,1]],"免得":[[1,1]],"孩子":[[1,1]],"嘴巴":[[1,1]],"著地":[[0,4]],"一部分":[[2,1]],"重寫":[[0,1]],"兔子":[[1,1]],"為了":[[0,1]],"部分":[[1,1]],"梯子":[[1,1]],"春華":[[1,1]],"相鄰":[[0,1]],"爸爸":[[1,1]],"當成":[[0,1]],"呱呱":[[0,2],[1,2]],"葉子":[[1,1]],"放假":[[1,1]],"影子":[[1,1]],"接縫":[[1,1]],"婆婆":[[1,1]],"那個":[[1,1]],"蓋子":[[1,1]],"應用":[[0,1]],"國定假日":[[2,1]],"重疊":[[0,1]],"唉呀":[[1,1]],"變更":[[1,1]],"當掉":[[0,1]],"為何":[[0,1]],"鴨子":[[1,1]],"東西":[[1,1]],"幾乎":[[0,1]],"露出":[[0,1]],"妹妹":[[1,1]],"重拍":[[0,1]],"目的":[[1,2]],"色調":[[1,1]],"為什麼":[[0,1]],"聲調":[[1,1]],"馬偕":[[1,1]],"本分":[[1,1]],"橘子":[[1,1]],"樂師":[[0,1]],"哪個":[[1,1]],"要求":[[0,1]],"衣裳":[[1,1]],"石頭":[[1,1]],"長大":[[0,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
+const PW={"泡泡":[[0,1],[1,1]],"一個":[[1,1]],"下載":[[1,1]],"空隙":[[0,1]],"這個":[[1,1]],"句子":[[1,1]],"成長":[[1,1]],"婆婆":[[1,1]],"放假":[[1,1]],"幾個":[[1,1]],"幾乎":[[0,1]],"橘子":[[1,1]],"孩子":[[1,1]],"當機":[[0,1]],"格子":[[1,1]],"鞋子":[[1,1]],"樣子":[[1,1]],"國定假日":[[2,1]],"空白":[[0,1]],"暑假":[[1,1]],"蓋子":[[1,1]],"還原":[[0,1]],"著地":[[0,4]],"目的":[[1,2]],"媽媽":[[1,1]],"謝謝":[[1,1]],"名字":[[1,1]],"重複":[[0,1]],"當成":[[0,1]],"那個":[[1,1]],"哥哥":[[1,1]],"重寫":[[0,1]],"葉子":[[1,1]],"奶奶":[[1,1]],"間隔":[[0,1]],"音樂":[[1,1]],"嘴巴":[[1,1]],"伯伯":[[1,1]],"少年":[[0,1]],"更新":[[0,1]],"分行":[[1,1]],"重新":[[0,1]],"了解":[[0,1]],"的當":[[0,1],[1,1]],"木頭":[[1,1]],"要求":[[0,1]],"重播":[[0,1]],"互相":[[1,1]],"為何":[[0,1]],"衣裳":[[1,1]],"為了":[[0,1]],"部分":[[1,1]],"行距":[[0,1]],"爸爸":[[1,1]],"兔子":[[1,1]],"一行":[[1,1]],"妹妹":[[1,1]],"寒假":[[1,1]],"家長":[[1,1]],"校正":[[0,1]],"尾巴":[[1,1]],"記得":[[1,1]],"露出":[[0,1]],"當掉":[[0,1]],"相反":[[0,1]],"長大":[[0,1]],"聲調":[[1,1]],"色調":[[1,1]],"哪個":[[1,1]],"鴨子":[[1,1]],"本分":[[1,1]],"一部分":[[2,1]],"應用":[[0,1]],"免得":[[1,1]],"春華":[[1,1]],"呱呱":[[0,2],[1,2]],"大個子":[[2,1]],"東西":[[1,1]],"唱反調":[[2,1]],"假日":[[0,1]],"樂師":[[0,1]],"重疊":[[0,1]],"喝采":[[0,1]],"個子":[[1,1]],"大部分":[[2,1]],"石頭":[[1,1]],"為什麼":[[0,1]],"重拍":[[0,1]],"相鄰":[[0,1]],"影子":[[1,1]],"多重":[[1,1]],"馬偕":[[1,1]],"交響樂":[[2,1]],"接縫":[[1,1]],"有空":[[1,1]],"變更":[[1,1]],"梯子":[[1,1]],"鼻子":[[1,1]],"唉呀":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
 let ZYON=lsGet("mf-zy2",false)===true;   // 預設不加注音（Ashley 2026-11-15：使用者是大人），想要的人按右上角「注音」打開
 function zyMark(root){if(!PWRE||!ZYON)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|OPTION|CANVAS)$/.test(p.nodeName)||p.dataset&&p.dataset.zy||!/[\u4e00-\u9fff]/.test(n.nodeValue))return NodeFilter.FILTER_REJECT;PWRE.lastIndex=0;return PWRE.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
   const L=[];while(w.nextNode())L.push(w.currentNode);
