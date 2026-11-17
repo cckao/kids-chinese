@@ -239,7 +239,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
 
   <div class="mfsearch"><input id="qFind" type="search" maxlength="20" placeholder="查字：打字看看寫過沒" enterkeyhint="search"><button class="btn p" id="qGo" type="button">查字</button></div>
   <div class="qout" id="qOut" hidden></div>
-  <nav class="mftabs" id="mfTabs"><button data-t="write" type="button">寫字</button><button data-t="paper" type="button">紙上寫</button><button data-t="ig" type="button">IG 圖</button><button data-t="gif" type="button">動圖</button><button data-t="cal" type="button">日曆</button><button data-t="type" type="button">試打下載</button></nav>
+  <nav class="mftabs" id="mfTabs"><button data-t="write" type="button">寫字</button><button data-t="paper" type="button">紙上寫</button><button data-t="ig" type="button">IG文字</button><button data-t="gif" type="button">動圖GIF</button><button data-t="cal" type="button">日曆</button><button data-t="type" type="button">試打下載</button></nav>
   <div class="mffolder" id="mfFolder">
 
   <div class="card" data-tab="write">
@@ -378,7 +378,7 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
     <span class="tag">GIF</span>
     <h2>做成動圖</h2>
     <div class="own" style="margin-top:0"><input id="txtGif" type="text" maxlength="40" placeholder="要做成動圖的一句話"></div>
-    <p class="note" style="margin:4px 0 0">跟「IG 圖」用同一句話，字的顏色、背景、效果也在「IG 圖」那頁調。</p>
+    <p class="note" style="margin:4px 0 0">跟「IG文字」用同一句話，字的顏色、背景、效果也在「IG文字」那頁調。</p>
     <div class="gifbox">
       <div class="pvlab" style="margin-top:14px"><b>做成動圖（GIF）</b>　選一種特效</div>
       <div class="seg" id="segFx"><button class="btn on" data-fx="write" type="button">一筆一筆寫</button><button class="btn" data-fx="wob" type="button">抖抖字</button><button class="btn" data-fx="jump" type="button">跳跳字</button><button class="btn" data-fx="drop" type="button">掉下來</button><button class="btn" data-fx="line" type="button">排排站（往右）</button><button class="btn" data-fx="liner" type="button">排排站（往左）</button></div>
@@ -407,9 +407,9 @@ body.zy .note,body.zy .hint,body.zy .chk,body.zy .tips,body.zy .scrollhint{font-
     <div class="row" style="margin-top:6px"><span class="lab">格子</span><div class="seg" id="tlGrid" style="flex:1"><button class="btn sm" data-v="1" type="button">田字格</button><button class="btn sm" data-v="0" type="button">空白</button></div></div>
     <canvas id="cvTl" style="width:100%;max-width:320px;display:block;margin:12px auto 4px;border-radius:12px;border:1px solid var(--line)"></canvas>
     <p class="note" id="tlInfo" style="text-align:center;margin:2px 0 6px"></p>
-    <div class="seg" style="display:grid;grid-template-columns:1fr 1.4fr 1.2fr;gap:6px"><button class="btn" id="tlPlay" type="button">預覽</button><button class="btn p" id="tlRec" type="button">存成影片</button><button class="btn" id="tlGif" type="button">存成 GIF</button></div>
+    <div class="seg" style="display:grid;grid-template-columns:1fr 1.6fr;gap:6px"><button class="btn" id="tlPlay" type="button">預覽</button><button class="btn p" id="tlRec" type="button">存成影片</button><button id="tlGif" type="button" hidden></button></div>
     <p class="note" id="tlProg" hidden style="margin:6px 0 0"></p>
-    <p class="note" style="margin:4px 0 0">存影片時會照實際長度播一次（15 秒的影片要等 15 秒），這段時間請不要切到別的 App 或分頁。GIF 檔案比較大，只能做 15 秒。影片右下角會有「寫寫字」和 QR code，看到的人掃一下就能來寫。</p>
+    <p class="note" style="margin:4px 0 0">存影片時會照實際長度播一次（15 秒的影片要等 15 秒），這段時間請不要切到別的 App 或分頁。影片右下角會有「寫寫字」和 QR code，看到的人掃一下就能來寫。</p>
   </div>
 
   <div class="card" id="calCard" data-tab="cal">
@@ -2264,7 +2264,7 @@ function renderImps(){const w=$("impWrap");if(!w)return;w.hidden=!IMPS.length;co
     L.appendChild(el);}}
 
 /* ---------- 介面文字加注音：字型自帶注音，多音字用 ssNN 換讀音（PW：語詞 → [[第幾個字, 第幾個讀音]]） ---------- */
-const PW={"葉子":[[1,1]],"一個":[[1,1]],"名字":[[1,1]],"目的":[[1,2]],"下載":[[1,1]],"更新":[[0,1]],"聲調":[[1,1]],"婆婆":[[1,1]],"格子":[[1,1]],"的當":[[0,1],[1,1]],"重拍":[[0,1]],"句子":[[1,1]],"石頭":[[1,1]],"鞋子":[[1,1]],"空白":[[0,1]],"孩子":[[1,1]],"國定假日":[[2,1]],"重新":[[0,1]],"重複":[[0,1]],"重寫":[[0,1]],"個子":[[1,1]],"空隙":[[0,1]],"還原":[[0,1]],"這個":[[1,1]],"那個":[[1,1]],"家長":[[1,1]],"奶奶":[[1,1]],"暑假":[[1,1]],"兔子":[[1,1]],"當掉":[[0,1]],"重播":[[0,1]],"哪個":[[1,1]],"多重":[[1,1]],"當成":[[0,1]],"媽媽":[[1,1]],"接縫":[[1,1]],"影子":[[1,1]],"重疊":[[0,1]],"幾個":[[1,1]],"音樂":[[1,1]],"鼻子":[[1,1]],"唉呀":[[1,1]],"謝謝":[[1,1]],"梯子":[[1,1]],"幾乎":[[0,1]],"木頭":[[1,1]],"校正":[[0,1]],"有空":[[1,1]],"要求":[[0,1]],"衣裳":[[1,1]],"少年":[[0,1]],"爸爸":[[1,1]],"馬偕":[[1,1]],"喝采":[[0,1]],"橘子":[[1,1]],"為什麼":[[0,1]],"呱呱":[[0,2],[1,2]],"一行":[[1,1]],"分行":[[1,1]],"色調":[[1,1]],"東西":[[1,1]],"變更":[[1,1]],"哥哥":[[1,1]],"妹妹":[[1,1]],"記得":[[1,1]],"尾巴":[[1,1]],"相反":[[0,1]],"應用":[[0,1]],"行距":[[0,1]],"部分":[[1,1]],"樂師":[[0,1]],"免得":[[1,1]],"寒假":[[1,1]],"樣子":[[1,1]],"為了":[[0,1]],"成長":[[1,1]],"間隔":[[0,1]],"著地":[[0,4]],"鴨子":[[1,1]],"長大":[[0,1]],"交響樂":[[2,1]],"泡泡":[[0,1],[1,1]],"唱反調":[[2,1]],"大個子":[[2,1]],"本分":[[1,1]],"為何":[[0,1]],"當機":[[0,1]],"假日":[[0,1]],"了解":[[0,1]],"伯伯":[[1,1]],"相鄰":[[0,1]],"露出":[[0,1]],"春華":[[1,1]],"放假":[[1,1]],"一部分":[[2,1]],"互相":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
+const PW={"露出":[[0,1]],"下載":[[1,1]],"當掉":[[0,1]],"一個":[[1,1]],"重複":[[0,1]],"一行":[[1,1]],"孩子":[[1,1]],"這個":[[1,1]],"媽媽":[[1,1]],"少年":[[0,1]],"行距":[[0,1]],"幾個":[[1,1]],"相鄰":[[0,1]],"句子":[[1,1]],"唱反調":[[2,1]],"格子":[[1,1]],"名字":[[1,1]],"更新":[[0,1]],"重新":[[0,1]],"爸爸":[[1,1]],"重寫":[[0,1]],"空白":[[0,1]],"衣裳":[[1,1]],"謝謝":[[1,1]],"記得":[[1,1]],"兔子":[[1,1]],"樣子":[[1,1]],"婆婆":[[1,1]],"梯子":[[1,1]],"當成":[[0,1]],"奶奶":[[1,1]],"放假":[[1,1]],"鼻子":[[1,1]],"寒假":[[1,1]],"為何":[[0,1]],"東西":[[1,1]],"國定假日":[[2,1]],"暑假":[[1,1]],"春華":[[1,1]],"假日":[[0,1]],"空隙":[[0,1]],"哪個":[[1,1]],"大個子":[[2,1]],"著地":[[0,4]],"葉子":[[1,1]],"互相":[[1,1]],"音樂":[[1,1]],"鞋子":[[1,1]],"幾乎":[[0,1]],"妹妹":[[1,1]],"喝采":[[0,1]],"馬偕":[[1,1]],"鴨子":[[1,1]],"接縫":[[1,1]],"有空":[[1,1]],"本分":[[1,1]],"長大":[[0,1]],"目的":[[1,2]],"間隔":[[0,1]],"木頭":[[1,1]],"變更":[[1,1]],"重播":[[0,1]],"家長":[[1,1]],"聲調":[[1,1]],"成長":[[1,1]],"分行":[[1,1]],"交響樂":[[2,1]],"色調":[[1,1]],"唉呀":[[1,1]],"泡泡":[[0,1],[1,1]],"呱呱":[[0,2],[1,2]],"一部分":[[2,1]],"為了":[[0,1]],"部分":[[1,1]],"樂師":[[0,1]],"影子":[[1,1]],"重疊":[[0,1]],"了解":[[0,1]],"尾巴":[[1,1]],"還原":[[0,1]],"校正":[[0,1]],"的當":[[0,1],[1,1]],"橘子":[[1,1]],"應用":[[0,1]],"要求":[[0,1]],"重拍":[[0,1]],"相反":[[0,1]],"免得":[[1,1]],"個子":[[1,1]],"多重":[[1,1]],"當機":[[0,1]],"伯伯":[[1,1]],"哥哥":[[1,1]],"那個":[[1,1]],"為什麼":[[0,1]],"石頭":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
 let ZYON=lsGet("mf-zy2",false)===true;   // 預設不加注音（Ashley 2026-11-15：使用者是大人），想要的人按右上角「注音」打開
 function zyMark(root){if(!PWRE||!ZYON)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|OPTION|CANVAS)$/.test(p.nodeName)||p.dataset&&p.dataset.zy||!/[\u4e00-\u9fff]/.test(n.nodeValue))return NodeFilter.FILTER_REJECT;PWRE.lastIndex=0;return PWRE.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
   const L=[];while(w.nextNode())L.push(w.currentNode);
