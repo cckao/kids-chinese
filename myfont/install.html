@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>手寫字型安裝教學</title>
+<meta name="description" content="把「寫寫字」做好的手寫字型檔（.otf）裝到 iPhone、iPad、電腦的圖文教學。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#534545;--bg:#fbf7f5;--card:#fff;--line:#e8dfdb;--soft:#8a7b7b;--y:#fbe94e;--m:#96d6d4;--p:#eb53d0;--hl:#eb53d0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 "Noto Sans TC",system-ui,sans-serif;padding:16px 16px 48px}
+.wrap{max-width:720px;margin:0 auto}
+.tag{display:inline-block;font:500 11px "IBM Plex Mono",monospace;letter-spacing:.12em;background:var(--y);padding:2px 8px;border-radius:6px}
+h1{font-size:26px;margin:10px 0 4px}
+.sub{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.14em;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:16px 0}
+h2{font-size:20px;margin:6px 0 8px}
+h3{font-size:17px;margin:18px 0 6px}
+p{margin:6px 0}
+.note{color:var(--soft);font-size:14px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
+.btn{font:inherit;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 6px;cursor:pointer}
+.btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.step{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;padding:12px 0;border-top:1px dashed var(--line)}
+.step:first-of-type{border-top:0}
+.step svg{width:150px;height:auto;display:block}
+.num{display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;font:500 13px "IBM Plex Mono",monospace;margin-right:6px;background:var(--m)}
+.step b{font-weight:700}
+.box{background:#f6f1ee;border-radius:14px;padding:12px 14px;margin:12px 0;font-size:15px}
+.box.warn{background:#fff8d6}
+.box ul{margin:4px 0;padding-left:20px}
+.route{display:inline-block;font:500 11px "IBM Plex Mono",monospace;letter-spacing:.1em;padding:2px 8px;border-radius:6px;background:var(--m);margin-right:6px}
+.route.b{background:#f7c6ee}
+[hidden]{display:none!important}
+a{color:var(--ink)}
+.foot{text-align:center;color:var(--soft);font-size:13px;margin-top:24px}
+.ostab{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0}
+.car .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.car .slides::-webkit-scrollbar{display:none}
+.car .sl{flex:0 0 100%;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-sizing:border-box}
+.car .sl svg{width:100%;max-width:420px;max-height:240px;height:auto;display:block;margin:0 auto 10px}.car .slides{align-items:flex-start}.car .sl p{margin:6px 0}
+.car .nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px}.car .dots{display:flex;gap:6px}.car .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);display:block}.car .dots i.on{background:var(--ink)}
+.btn.sm{padding:4px 14px;font-size:14px}
+@media (max-width:520px){.step{grid-template-columns:110px 1fr;gap:10px}.step svg{width:110px}.seg .btn{font-size:14px;padding:8px 2px}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">HOW TO INSTALL</span>
+  <h1>手寫字型安裝教學</h1>
+  <div class="sub">MY HANDWRITING FONT ・ 國語生字學習站</div>
+
+  <div class="card">
+    <p>在「寫寫字」寫好字以後，可以把自己的字裝到電腦（Windows、Mac），在 Word、簡報裡打出自己的字。</p>
+    <div class="seg" role="tablist" hidden>
+      <button class="btn" data-t="ios" type="button" hidden>iPhone／iPad</button>
+      <button class="btn" data-t="and" type="button" hidden>Android</button>
+      <button class="btn" data-t="pc" type="button">電腦</button>
+    </div>
+    <div class="box warn"><b>先知道：</b>裝好的字型會出現在 Word、PowerPoint、Pages、Keynote 這些<b>會列出電腦字型</b>的軟體。Google 文件、Canva 這類網頁版軟體沒辦法用。</div>
+  </div>
+
+  <!-- iPhone / iPad -->
+  <section data-p="ios">
+    <div class="card">
+      <span class="route">教學 1</span>
+      <h2>iPhone、iPad：一個按鈕直接安裝</h2>
+      <p class="note" style="margin-top:0">不用下載其他 App。字型會包成一個「描述檔」，在「設定」允許後就裝好了。</p>
+      <div class="step"><svg data-img="btn"></svg><div><span class="num">1</span>用 <b>Safari</b> 打開學習站的「寫寫字」，按「<b>iPhone／iPad：直接安裝到手機</b>」。<p class="note">在 LINE、IG、FB 裡點開的網頁不行，請按右下角「⋯」選「用 Safari 開啟」。</p></div></div>
+      <div class="step"><svg data-img="allow"></svg><div><span class="num">2</span>跳出「要下載描述檔嗎？」時，按「<b>允許</b>」，再按「關閉」。<p class="note">這時候還沒裝好，要到「設定」完成下一步。</p></div></div>
+      <div class="step"><svg data-img="set"></svg><div><span class="num">3</span>打開「<b>設定</b>」，最上面會出現「<b>已下載描述檔</b>」，點它。<p class="note">沒看到的話：設定 →「一般」→「VPN 與裝置管理」，點「字型：○○的字」。</p></div></div>
+      <div class="step"><svg data-img="prof"></svg><div><span class="num">4</span>按右上角「<b>安裝</b>」，輸入手機密碼，再按一次「<b>安裝</b>」→「完成」。<p class="note">畫面寫「未簽署」是正常的，自己做的字型都會這樣。描述檔裡只有字型，不會改手機的其他設定。</p></div></div>
+      <div class="step"><svg data-img="label"></svg><div><span class="num">5</span>打開要用的 App（已經開著的話，<b>先關掉再重開</b>），在字型清單找「<b>○○的字</b>」。</div></div>
+      <h3>裝好以後，哪些 App 可以用？</h3>
+      <ul>
+        <li><b>可以：</b>字型清單會列出「手機裡的字型」的 App，例如 Pages、Keynote、Word、GoodNotes、Procreate。</li>
+        <li><b>標籤機 App：</b>要看那個 App。字型清單有「系統字型」「本機字型」或會列出手機裡的字型，就找得到「○○的字」；如果只有 App 自己提供的字型，就找不到。最快的方法是裝好以後打開標籤機 App 的字型清單找找看。</li>
+        <li><b>不行：</b>IG、LINE、FB 和手機的系統字型。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Android -->
+  <section data-p="and" hidden>
+    <div class="card">
+      <span class="route">教學 2</span>
+      <h2>Android 手機、平板：在 App 裡匯入</h2>
+      <p class="note" style="margin-top:0">大部分 Android 手機不能把下載的字型裝成整台手機都能用的字型，要在 App 裡匯入。</p>
+      <div class="step"><svg data-img="adl"></svg><div><span class="num">1</span>在「寫寫字」按「<b>做成字型檔並下載</b>」，檔案會存到「<b>下載</b>」資料夾，檔名像「○○的字.otf」。</div></div>
+      <div class="step"><svg data-img="aimp"></svg><div><span class="num">2</span>打開要用的 App（例如標籤機 App），到文字或字型設定，找「<b>匯入字型</b>」「<b>自訂字型</b>」或「<b>新增字型</b>」。</div></div>
+      <div class="step"><svg data-img="label"></svg><div><span class="num">3</span>從「下載」選「○○的字.otf」，字型清單就會出現「<b>○○的字</b>」。</div></div>
+      <h3>裝好以後，哪些 App 可以用？</h3>
+      <ul>
+        <li><b>可以：</b>有「匯入字型」功能的 App，例如部分標籤機、繪圖、修圖、筆記 App。匯入到哪個 App，就只能在那個 App 用。</li>
+        <li><b>標籤機 App：</b>沒有「匯入字型」功能的話就不能用，可以問標籤機廠商，或改用電腦版軟體。</li>
+        <li><b>不行：</b>IG、LINE、FB 和手機的系統字型。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 電腦 -->
+  <section data-p="pc" hidden>
+    <div class="card">
+      <span class="route">安裝教學</span>
+      <h2>電腦：Windows、Mac</h2>
+      <p class="note" style="margin-top:0">在「寫寫字」按「<b>做成字型檔並下載</b>」，再照你的電腦安裝。電腦裝好以後，大部分軟體都能用。</p>
+      <div class="ostab" role="tablist"><button class="btn on" data-os="win" type="button">Windows</button><button class="btn" data-os="mac" type="button">Mac</button></div>
+      <div class="car" data-os="win">
+        <div class="slides">
+          <div class="sl"><svg data-img="wfile"></svg><p><span class="num">1</span>打開「<b>檔案總管</b>」→「<b>下載</b>」，找到「○○的字.otf」。</p></div>
+          <div class="sl"><svg data-img="wmenu"></svg><p><span class="num">2</span>在檔案上按<b>右鍵</b>，選「<b>安裝</b>」。</p><p class="note">Windows 11 沒看到「安裝」的話，先點「顯示其他選項」。也可以點兩下打開預覽，再按左上角「安裝」。</p></div>
+          <div class="sl"><svg data-img="word"></svg><p><span class="num">3</span>打開 Word 或 PowerPoint（已經開著的話，<b>先關掉再重開</b>），在字型選單找「<b>○○的字</b>」。</p></div>
+        </div>
+        <div class="nav"><button class="btn sm prev" type="button" aria-label="上一張">←</button><div class="dots"></div><button class="btn sm next" type="button" aria-label="下一張">→</button></div>
+      </div>
+      <div class="car" data-os="mac" hidden>
+        <div class="slides">
+          <div class="sl"><svg data-img="mfile"></svg><p><span class="num">1</span>打開「<b>Finder</b>」→「<b>下載項目</b>」，<b>點兩下</b>「○○的字.otf」。</p></div>
+          <div class="sl"><svg data-img="fb"></svg><p><span class="num">2</span>會打開「字體簿」的預覽視窗，按右下角「<b>安裝字體</b>」。</p><p class="note">如果跳出「字體驗證」警告，手寫字型常會這樣，勾選後按「安裝已勾選的項目」。</p></div>
+          <div class="sl"><svg data-img="word"></svg><p><span class="num">3</span>打開 Pages、Keynote 或 Word（已經開著的話，<b>先關掉再重開</b>），在字型選單找「<b>○○的字</b>」。</p></div>
+        </div>
+        <div class="nav"><button class="btn sm prev" type="button" aria-label="上一張">←</button><div class="dots"></div><button class="btn sm next" type="button" aria-label="下一張">→</button></div>
+      </div>
+      <p class="note" style="text-align:center;margin-top:4px">往左滑看下一步</p>
+      <h3>裝好以後，哪些軟體可以用？</h3>
+      <ul>
+        <li><b>可以：</b>Word、PowerPoint、Pages、Keynote、Illustrator 等會列出電腦字型的軟體。</li>
+        <li><b>不行：</b>Google 文件、Canva 免費版這類網頁版軟體。</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="card">
+    <h2>小提醒</h2>
+    <ul>
+      <li>還沒寫過的字，會自動用其他字型顯示。多寫一些字，看起來會更完整。</li>
+      <li>寫了更多字以後，重新下載字型檔再安裝一次，就會換成新的。勾選「字型名稱加上編號」，新舊字型才不會搞混。</li>
+      <li>文件傳給別人時，對方沒有這個字型就會變成別的字。<b>先存成 PDF 再傳</b>，就能保留自己的字。</li>
+            <li>不想要了：Windows 到「設定 → 個人化 → 字型」解除安裝；Mac 在字體簿刪除。</li>
+    </ul>
+  </div>
+  <div class="foot">國語生字學習站 ・ Ashley 設計規劃</div>
+</div>
+
+<script>
+/* 分頁 */
+const tabs=document.querySelectorAll(".seg .btn");
+function show(t){tabs.forEach(b=>b.classList.toggle("on",b.dataset.t===t));document.querySelectorAll("section[data-p]").forEach(s=>s.hidden=s.dataset.p!==t);}
+tabs.forEach(b=>b.onclick=()=>show(b.dataset.t));
+show("pc");   // 先只教電腦（Ashley 2026-11-16）
+
+/* 示意圖：自己畫的簡單畫面，粉紅圈＝要按的地方 */
+const C={ink:"#534545",line:"#d9cfcb",soft:"#a39494",fill:"#f6f1ee",hl:"#eb53d0",m:"#96d6d4",y:"#fbe94e",blue:"#3b82f6"};
+const T=(x,y,s,o={})=>`<text x="${x}" y="${y}" font-size="${o.fs||11}" fill="${o.c||C.ink}" font-weight="${o.b?700:400}" text-anchor="${o.a||"start"}" font-family="Noto Sans TC,sans-serif">${s}</text>`;
+const R=(x,y,w,h,o={})=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.r??6}" fill="${o.f||"#fff"}" stroke="${o.s||C.line}" stroke-width="${o.sw||1}"/>`;
+const HL=(x,y,w,h)=>`<rect x="${x-3}" y="${y-3}" width="${w+6}" height="${h+6}" rx="10" fill="none" stroke="${C.hl}" stroke-width="2.5"/>`;
+const phone=(inner,title)=>`<svg viewBox="0 0 150 260" xmlns="http://www.w3.org/2000/svg">${R(3,3,144,254,{r:22,s:C.ink,sw:2})}${R(56,10,38,8,{r:4,f:C.ink,s:C.ink})}${title?T(75,40,title,{a:"middle",b:1,fs:12}):""}${inner}</svg>`;
+const screen=(inner,title)=>`<svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">${R(3,3,194,118,{r:8,s:C.ink,sw:2})}${R(70,121,60,10,{r:2,f:C.line,s:C.line})}${R(3,3,194,16,{r:8,f:C.fill,s:C.ink,sw:2})}<circle cx="13" cy="11" r="2.5" fill="#f87171"/><circle cx="21" cy="11" r="2.5" fill="#fbbf24"/><circle cx="29" cy="11" r="2.5" fill="#34d399"/>${title?T(100,15,title,{a:"middle",fs:9}):""}${inner}</svg>`;
+const row=(y,s,o={})=>R(14,y,122,24,{r:6,f:o.f||"#fff"})+T(22,y+16,s,{fs:10.5,b:o.b,c:o.c});
+const font=`<g transform="translate(0,0)">`;
+const IMG={
+  btn:phone(R(14,50,122,20,{r:10,f:C.fill})+T(75,64,"leyleyaiink.github.io",{a:"middle",fs:8.5,c:C.soft})+T(22,92,"做成字型",{fs:11,b:1})+R(14,100,122,24,{r:12,f:"#fff",s:C.ink})+T(75,116,"做成字型檔並下載",{a:"middle",fs:9})+R(14,132,122,24,{r:12,f:C.ink,s:C.ink})+T(75,148,"直接安裝到手機",{a:"middle",fs:9.5,c:"#fff",b:1})+HL(14,132,122,24)+T(75,236,"Safari",{a:"middle",fs:9,c:C.soft}),"寫寫字"),
+  label:phone(R(14,50,122,52,{f:"#fff",s:C.ink})+T(75,83,"我愛寫字",{a:"middle",fs:15,b:1})+R(14,114,122,120,{f:C.fill})+T(22,132,"字型",{fs:10,b:1})+row(140,"○○的字",{b:1})+HL(14,140,122,24)+row(168,"系統字型")+row(196,"App 內建字型"),"標籤 App"),
+  adl:phone(row(56,"下載",{b:1})+R(14,92,122,46,{f:C.fill})+R(22,99,30,32,{f:"#fff"})+T(37,120,"Aa",{a:"middle",b:1})+T(60,112,"○○的字",{fs:10,b:1})+T(60,127,".otf",{fs:9,c:C.soft})+HL(14,92,122,46),"檔案"),
+  aimp:phone(R(14,50,122,52,{f:"#fff",s:C.ink})+T(75,83,"我愛寫字",{a:"middle",fs:15,b:1})+R(14,114,122,120,{f:C.fill})+T(22,132,"字型",{fs:10,b:1})+R(22,140,106,24,{r:12,f:C.ink,s:C.ink})+T(75,156,"＋ 匯入字型",{a:"middle",fs:10,c:"#fff"})+HL(22,140,106,24)+row(174,"內建字型 1")+row(202,"內建字型 2"),"標籤 App"),
+  files:phone(row(56,"最近項目")+row(84,"下載項目",{b:1})+HL(14,84,122,24)+row(112,"iCloud 雲碟")+R(14,150,122,60,{f:C.fill})+R(24,160,30,38,{f:"#fff"})+T(39,184,"Aa",{a:"middle",b:1})+T(62,176,"○○的字",{fs:10,b:1})+T(62,192,".otf",{fs:9,c:C.soft}),"檔案"),
+  pc1:phone(R(14,50,122,150,{f:"#fff"})+T(75,130,"Aa",{a:"middle",fs:28,c:C.line,b:1})+`<g transform="translate(108,58)"><path d="M2 14 L10 6 M8 2 a5 5 0 1 0 6 6" stroke="${C.ink}" stroke-width="2" fill="none"/></g>`+HL(104,54,22,20)+R(14,210,122,30,{f:C.fill})+T(75,229,"動作 → 加入 → 加入文字",{a:"middle",fs:9.5}),"Procreate"),
+  pc2:phone(R(14,50,122,150,{f:"#fff"})+R(30,100,90,34,{r:4,s:C.blue})+T(75,123,"我的字",{a:"middle",fs:14})+R(48,146,54,22,{r:6,f:C.ink,s:C.ink})+T(75,161,"編輯樣式",{a:"middle",fs:10,c:"#fff"})+HL(48,146,54,22),"Procreate"),
+  pc3:phone(R(14,50,122,180,{f:"#fff"})+T(22,70,"字體",{fs:11,b:1})+R(80,58,50,18,{r:5,f:C.fill})+T(105,71,"匯入字體",{a:"middle",fs:9})+HL(80,58,50,18)+row(86,"○○的字",{b:1})+row(114,"Helvetica")+row(142,"Georgia")+row(170,"Courier"),"Procreate"),
+  as:phone(R(14,52,122,24,{r:12,f:C.fill})+T(28,68,"字型 安裝",{fs:11})+HL(14,52,122,24)+R(14,92,122,48,{f:"#fff"})+R(22,100,32,32,{r:8,f:C.y,s:C.y})+T(38,121,"Aa",{a:"middle",b:1,fs:12})+T(62,114,"字型安裝 App",{fs:10,b:1})+R(98,120,32,14,{r:7,f:C.fill})+T(114,130,"取得",{a:"middle",fs:8.5})+R(14,150,122,48,{f:"#fff"})+R(22,158,32,32,{r:8,f:C.m,s:C.m})+T(62,172,"其他 App",{fs:10,c:C.soft}),"App Store"),
+  imp:phone(R(30,60,90,26,{r:13,f:C.ink,s:C.ink})+T(75,77,"＋ 匯入字型",{a:"middle",fs:11,c:"#fff"})+HL(30,60,90,26)+R(14,104,122,40,{f:C.fill})+T(24,128,"○○的字.otf",{fs:10.5,b:1})+R(94,114,36,20,{r:10,f:"#fff",s:C.ink})+T(112,128,"安裝",{a:"middle",fs:9.5}),"字型安裝 App"),
+  allow:phone(`<rect x="3" y="3" width="144" height="254" rx="22" fill="rgba(0,0,0,.18)"/>`+R(18,82,114,96,{r:14,f:"#fff"})+T(75,104,"要下載描述檔嗎？",{a:"middle",fs:10.5,b:1})+T(75,122,"這個網站要下載",{a:"middle",fs:9,c:C.soft})+T(75,135,"字型描述檔",{a:"middle",fs:9,c:C.soft})+`<line x1="18" y1="148" x2="132" y2="148" stroke="${C.line}"/><line x1="75" y1="148" x2="75" y2="178" stroke="${C.line}"/>`+T(46,167,"忽略",{a:"middle",fs:10.5,c:C.blue})+T(104,167,"允許",{a:"middle",fs:10.5,c:C.blue,b:1})+HL(80,150,48,24)),
+  set:phone(R(14,52,122,30,{f:"#fff"})+`<circle cx="30" cy="67" r="9" fill="${C.line}"/>`+T(44,71,"Apple 帳號",{fs:9.5,c:C.soft})+R(14,90,122,26,{f:"#fff"})+T(22,107,"已下載描述檔",{fs:10.5,b:1})+T(126,107,"›",{a:"end",fs:12,c:C.soft})+HL(14,90,122,26)+row(130,"飛航模式")+row(156,"Wi‑Fi")+row(190,"一般")+row(216,"VPN 與裝置管理",{c:C.soft}),"設定"),
+  prof:phone(T(24,40,"取消",{fs:10,c:C.blue})+T(126,40,"安裝",{a:"end",fs:10,c:C.blue,b:1})+HL(100,28,32,16)+R(14,58,122,58,{f:C.fill})+R(22,68,36,36,{r:8,f:C.y,s:C.y})+T(40,92,"Aa",{a:"middle",b:1})+T(64,84,"○○的字",{fs:10.5,b:1})+T(64,100,"未簽署",{fs:9,c:C.soft})+T(22,138,"包含：字型",{fs:9.5,c:C.soft}),"安裝描述檔"),
+  pages:phone(R(14,50,122,60,{f:"#fff"})+T(22,86,"我愛寫字",{fs:16,b:1})+R(14,124,122,110,{f:C.fill})+T(22,142,"字體",{fs:10,b:1})+row(150,"○○的字",{b:1})+HL(14,150,122,24)+row(178,"蘋方-繁")+row(206,"黑體-繁"),"Pages"),
+  wfile:screen(R(10,26,46,90,{r:4,f:C.fill})+T(16,44,"本機",{fs:8})+T(16,60,"下載",{fs:8,b:1})+T(16,76,"文件",{fs:8})+R(64,30,124,22,{r:4,f:"#fff"})+T(72,45,"○○的字.otf",{fs:9,b:1})+HL(64,30,124,22),"下載"),
+  wmenu:screen(R(14,30,80,20,{r:4,f:"#e0ecff",s:C.blue})+T(20,44,"○○的字.otf",{fs:8.5})+R(70,48,100,66,{r:6,f:"#fff"})+T(80,64,"開啟",{fs:9})+T(80,82,"安裝",{fs:9,b:1})+HL(74,70,92,18)+T(80,100,"顯示其他選項",{fs:9,c:C.soft}),"檔案總管"),
+  word:screen(R(10,26,180,20,{r:3,f:C.fill})+R(14,29,70,14,{r:3,f:"#fff"})+T(18,40,"○○的字",{fs:8.5,b:1})+R(14,46,70,58,{r:4,f:"#fff"})+T(18,60,"○○的字",{fs:9,b:1})+HL(14,48,70,16)+T(18,78,"新細明體",{fs:8.5,c:C.soft})+T(18,94,"標楷體",{fs:8.5,c:C.soft})+T(100,80,"我愛寫字",{fs:15,b:1}),"Word"),
+  mfile:screen(R(10,26,46,90,{r:4,f:C.fill})+T(16,44,"最近項目",{fs:8})+T(16,60,"下載項目",{fs:8,b:1})+R(80,34,40,48,{r:4,f:"#fff"})+T(100,64,"Aa",{a:"middle",b:1,fs:12})+T(100,98,"○○的字.otf",{a:"middle",fs:8.5,b:1})+HL(76,30,48,76),"下載項目"),
+  fb:screen(T(100,58,"我愛寫字 ABC 123",{a:"middle",fs:13,b:1})+T(100,78,"○○的字",{a:"middle",fs:9,c:C.soft})+R(126,94,62,20,{r:5,f:C.ink,s:C.ink})+T(157,108,"安裝字體",{a:"middle",fs:9,c:"#fff"})+HL(126,94,62,20),"○○的字"),
+};
+/* 電腦安裝：先選系統，再左右滑（Ashley 2026-11-16） */
+document.querySelectorAll(".ostab .btn").forEach(b=>b.onclick=()=>{document.querySelectorAll(".ostab .btn").forEach(x=>x.classList.toggle("on",x===b));document.querySelectorAll(".car").forEach(c=>c.hidden=c.dataset.os!==b.dataset.os);});
+{const u=navigator.userAgent;if(/Macintosh/.test(u))document.querySelector('.ostab [data-os="mac"]').click();}
+document.querySelectorAll(".car").forEach(car=>{const sl=car.querySelector(".slides"),n=sl.children.length,dots=car.querySelector(".dots");dots.innerHTML="<i></i>".repeat(n);
+  const cur=()=>Math.round(sl.scrollLeft/Math.max(1,sl.clientWidth+12)),upd=()=>{const k=cur();[...dots.children].forEach((d,i)=>d.classList.toggle("on",i===k));};
+  const go=k=>sl.scrollTo({left:Math.max(0,Math.min(n-1,k))*(sl.clientWidth+12),behavior:"smooth"});
+  sl.addEventListener("scroll",()=>{clearTimeout(sl._t);sl._t=setTimeout(upd,60);});car.querySelector(".prev").onclick=()=>go(cur()-1);car.querySelector(".next").onclick=()=>go(cur()+1);upd();});
+document.querySelectorAll("svg[data-img]").forEach(s=>{const k=s.dataset.img;if(IMG[k])s.outerHTML=IMG[k].replace("<svg ",`<svg role="img" aria-label="示意圖" `);});
+</script>
+</body>
+</html>
