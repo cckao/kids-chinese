@@ -822,6 +822,7 @@ const BR={
   hol:{name:"空心筆",col:"#2b2424",w:52,vary:true,soft:true,press:true,hol:true},   // 寫出來就是空心字：同一個字的空心筆畫先合成一塊，只描外框，交叉處不會有重疊的線（Ashley 2026-11-16）
   chk:{name:"蠟筆",col:"#2b2424",w:40,vary:true,soft:true,press:true,chk:true},   // 蠟筆：正圓筆頭＋紙紋小白點、邊緣毛毛的（Ashley 2026-11-16：粉筆改成蠟筆、正圓筆頭）
   fen:{name:"粉筆",col:"#2b2424",w:30,fen:true},   // 粉筆：方頭斜切筆尖（橫細直粗、收筆平平的）＋細碎小白點和毛邊，不崩大塊（Ashley 2026-11-18：比試做 C 再少一點）
+  _sqc:{name:"方塊頭",col:"#2b2424",w:30,sqcap:true,hide:true},   // 粉筆用：方形筆頭，粗細一致、頭尾方方的（Ashley 2026-11-18：粉筆要是方形）
   _cr:{name:"圓頭",col:"#2b2424",w:30,vary:true,soft:true,hide:true},   // 蠟筆用的正圓筆頭（不出現在筆刷列表）
   _sq:{name:"方頭",col:"#2b2424",w:30,vary:true,nib:true,round:.8,ang:12,taper:0,hide:true},   // 粉筆用的方形筆頭（不出現在筆刷列表）
   wob:{name:"抖抖筆",col:"#1f1a1a",w:52,vary:true,soft:true,press:true,wob:true},   // 筆頭是凹凸不平的圓，筆畫邊緣微微抖動、頭尾不規則
@@ -910,7 +911,7 @@ function wobPath(x,st,S,wMul){const b=BR[st.b],k=S/1000;let p=st.p;
     const r0=Math.min(A[2],B[2])*wMul/2,step=Math.max(1.2,r0*2*.08),n=Math.ceil(d/step);
     for(let j=1;j<=n;j++){const u=j/n,r=(A[2]+(B[2]-A[2])*u)*wMul/2,off=(rnd()-.5)*2*.18*r;dot(A[0]+(B[0]-A[0])*u+nx*off,A[1]+(B[1]-A[1])*u+ny*off,r);}}
   x.fill("nonzero");}
-function strokePath(x,st,S,wMul){wMul*=st.m||1;const b=BR[st.b]||BR.round,k=S/1000,p=st.p;if(b.nib)return nibPath(x,st,S,wMul);if(b.wob)return wobPath(x,st,S,wMul);if(b.bp)return bpPath(x,st,S,wMul);if(b.dash)return dashPath(x,st,S,wMul);if(b.pix)return pixPath(x,st,S,wMul);x.strokeStyle=b.col;x.fillStyle=b.col;x.lineCap="round";x.lineJoin="round";
+function strokePath(x,st,S,wMul){wMul*=st.m||1;const b=BR[st.b]||BR.round,k=S/1000,p=st.p;if(b.nib)return nibPath(x,st,S,wMul);if(b.wob)return wobPath(x,st,S,wMul);if(b.bp)return bpPath(x,st,S,wMul);if(b.dash)return dashPath(x,st,S,wMul);if(b.pix)return pixPath(x,st,S,wMul);x.strokeStyle=b.col;x.fillStyle=b.col;x.lineCap="round";x.lineJoin="round";if(b.sqcap){x.lineCap="square";x.lineJoin="miter";x.miterLimit=2.2;}
   if(p.length===1){x.beginPath();x.arc(p[0][0]*k,p[0][1]*k,Math.max(1,(b.vary?p[0][2]:b.w)*k*wMul/2),0,7);x.fill();return;}
   if(!b.vary){x.lineWidth=b.w*k*wMul;x.beginPath();x.moveTo(p[0][0]*k,p[0][1]*k);
     for(let i=1;i<p.length-1;i++){const mx=(p[i][0]+p[i+1][0])/2,my=(p[i][1]+p[i+1][1])/2;x.quadraticCurveTo(p[i][0]*k,p[i][1]*k,mx*k,my*k);}
@@ -1007,7 +1008,7 @@ function drawChalky(x,g,S,sq){if(!sq&&!g.img)g={s:g.s.map(st=>{const pw=(st.p[0]
     w.globalCompositeOperation="destination-in";w.drawImage(Z,0,0);}   // 斑駁：不規則的幾塊地方蠟比較少、白點特別密（Ashley 2026-11-18：再加一些不規則的斑駁感）
   m.globalCompositeOperation="destination-out";m.drawImage(H,0,0);m.drawImage(C,0,0);if(W)m.drawImage(W,0,0);x.drawImage(M,0,0,S,S);}
 let CHKBL=.14;
-let FENBL=-.5;   /* 粉筆細碎程度：0＝試做 C，1＝試做 D；Ashley 2026-11-18 要比 C 再少一點 */
+let FENBL=-.5,FENW=48;   /* FENW：粉筆預設粗細（Ashley 2026-11-18：斜切頭、再粗一點，原本 34；方形頭試過不用） */   /* 粉筆細碎程度：0＝試做 C，1＝試做 D；Ashley 2026-11-18 要比 C 再少一點 */
 function drawChalkFine(x,g,S,dens){const a=Math.abs(x.getTransform().a)||1,N=Math.max(8,Math.min(600,Math.ceil(S*a)));let ci=0;
   const mk=()=>{const P=(FENPOOL[N]=FENPOOL[N]||[]);let c=P[ci++];if(!c){c=document.createElement("canvas");c.width=c.height=N;P.push(c);}const t=c.getContext("2d");t.setTransform(1,0,0,1,0,0);t.globalCompositeOperation="source-over";t.clearRect(0,0,N,N);return c;};
   const M=mk(),m=M.getContext("2d");m.scale(N/S,N/S);drawGlyph(m,g,S);m.setTransform(1,0,0,1,0,0);
@@ -1032,7 +1033,7 @@ function drawGlyph(x,g,S){const chalk=[],gra=[],hol=[],chk=[],pop=[],fen=[];
   for(const st of pop){TMP5=TMP5||document.createElement("canvas");const y=layer(TMP5,x);y.save();popPath(y,st,S);y.restore();   // 一筆一層：自己這一筆顏色均勻，跟別的筆交疊才變深
     x.save();x.setTransform(1,0,0,1,0,0);x.globalAlpha=.84;x.drawImage(TMP5,0,0);x.restore();}
   if(hol.length){if(FAST)for(const st of hol)drawStroke(x,{...st,b:"round"},S);else drawHollow(x,{s:hol.map(st=>({...st,b:"round"}))},S);}
-  if(fen.length){const s2=fen.map(st=>({...st,b:"_sq",a:12,m:(st.m||1)*34/30}));if(FAST)for(const st of s2)drawStroke(x,st,S);else drawChalkFine(x,{s:s2},S,FENBL);}
+  if(fen.length){const s2=fen.map(st=>({...st,b:"_sq",a:12,m:(st.m||1)*FENW/30}));if(FAST)for(const st of s2)drawStroke(x,st,S);else drawChalkFine(x,{s:s2},S,FENBL);}
   if(chk.length){if(FAST)for(const st of chk)drawStroke(x,{...st,b:"_cr",a:null},S);else drawChalky(x,{s:chk.map(st=>({...st,b:"_cr",a:null}))},S,true);}
   if(gra.length){TMP3=TMP3||document.createElement("canvas");const y=layer(TMP3,x);for(const st of gra){y.save();strokePath(y,st,S,1);y.restore();}
     const p=y.createPattern(grainTile(),"repeat");if(p.setTransform)p.setTransform(new DOMMatrix().scale(S/1700));y.globalCompositeOperation="destination-out";y.fillStyle=p;y.fillRect(-S,-S,S*3,S*3);
@@ -2617,7 +2618,7 @@ function renderImps(){const w=$("impWrap");if(!w)return;w.hidden=!IMPS.length;co
     L.appendChild(el);}}
 
 /* ---------- 介面文字加注音：字型自帶注音，多音字用 ssNN 換讀音（PW：語詞 → [[第幾個字, 第幾個讀音]]） ---------- */
-const PW={"尾巴":[[1,1]],"記得":[[1,1]],"重複":[[0,1]],"一個":[[1,1]],"媽媽":[[1,1]],"音樂":[[1,1]],"鞋子":[[1,1]],"句子":[[1,1]],"的當":[[0,1],[1,1]],"下載":[[1,1]],"這個":[[1,1]],"幾個":[[1,1]],"暑假":[[1,1]],"為了":[[0,1]],"部分":[[1,1]],"格子":[[1,1]],"重疊":[[0,1]],"重新":[[0,1]],"那個":[[1,1]],"唱反調":[[2,1]],"分行":[[1,1]],"孩子":[[1,1]],"空白":[[0,1]],"謝謝":[[1,1]],"彎曲":[[1,1]],"名字":[[1,1]],"還原":[[0,1]],"喝采":[[0,1]],"空隙":[[0,1]],"免得":[[1,1]],"幾乎":[[0,1]],"變更":[[1,1]],"一部分":[[2,1]],"樣子":[[1,1]],"大部分":[[2,1]],"少年":[[0,1]],"相反":[[0,1]],"行距":[[0,1]],"葉子":[[1,1]],"重寫":[[0,1]],"奶奶":[[1,1]],"爸爸":[[1,1]],"著地":[[0,4]],"哪個":[[1,1]],"泡泡":[[0,1],[1,1]],"大個子":[[2,1]],"當成":[[0,1]],"成長":[[1,1]],"鼻子":[[1,1]],"蓋子":[[1,1]],"更新":[[0,1]],"梯子":[[1,1]],"重播":[[0,1]],"聲調":[[1,1]],"樂師":[[0,1]],"木頭":[[1,1]],"兔子":[[1,1]],"要求":[[0,1]],"色調":[[1,1]],"一行":[[1,1]],"東西":[[1,1]],"有空":[[1,1]],"多重":[[1,1]],"個子":[[1,1]],"了解":[[0,1]],"婆婆":[[1,1]],"家長":[[1,1]],"應用":[[0,1]],"妹妹":[[1,1]],"哥哥":[[1,1]],"衣裳":[[1,1]],"春華":[[1,1]],"寒假":[[1,1]],"為何":[[0,1]],"為什麼":[[0,1]],"間隔":[[0,1]],"鴨子":[[1,1]],"假日":[[0,1]],"馬偕":[[1,1]],"日子":[[1,1]],"交響樂":[[2,1]],"唉呀":[[1,1]],"呱呱":[[0,2],[1,2]],"目的":[[1,2]],"本分":[[1,1]],"橘子":[[1,1]],"當機":[[0,1]],"校正":[[0,1]],"露出":[[0,1]],"薄荷":[[0,1]],"當掉":[[0,1]],"石頭":[[1,1]],"伯伯":[[1,1]],"國定假日":[[2,1]],"重拍":[[0,1]],"嘴巴":[[1,1]],"覺得":[[1,1]],"相鄰":[[0,1]],"長大":[[0,1]],"接縫":[[1,1]],"互相":[[1,1]],"放假":[[1,1]],"影子":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
+const PW={"重播":[[0,1]],"格子":[[1,1]],"那個":[[1,1]],"媽媽":[[1,1]],"謝謝":[[1,1]],"聲調":[[1,1]],"重拍":[[0,1]],"句子":[[1,1]],"互相":[[1,1]],"更新":[[0,1]],"這個":[[1,1]],"重新":[[0,1]],"鼻子":[[1,1]],"一個":[[1,1]],"呱呱":[[0,2],[1,2]],"衣裳":[[1,1]],"空隙":[[0,1]],"妹妹":[[1,1]],"馬偕":[[1,1]],"名字":[[1,1]],"重疊":[[0,1]],"目的":[[1,2]],"記得":[[1,1]],"兔子":[[1,1]],"重寫":[[0,1]],"幾個":[[1,1]],"樣子":[[1,1]],"鞋子":[[1,1]],"國定假日":[[2,1]],"空白":[[0,1]],"奶奶":[[1,1]],"唉呀":[[1,1]],"著地":[[0,4]],"成長":[[1,1]],"間隔":[[0,1]],"大個子":[[2,1]],"爸爸":[[1,1]],"暑假":[[1,1]],"下載":[[1,1]],"泡泡":[[0,1],[1,1]],"尾巴":[[1,1]],"相反":[[0,1]],"幾乎":[[0,1]],"當成":[[0,1]],"為什麼":[[0,1]],"家長":[[1,1]],"孩子":[[1,1]],"校正":[[0,1]],"影子":[[1,1]],"假日":[[0,1]],"哪個":[[1,1]],"的當":[[0,1],[1,1]],"當掉":[[0,1]],"喝采":[[0,1]],"多重":[[1,1]],"部分":[[1,1]],"重複":[[0,1]],"長大":[[0,1]],"交響樂":[[2,1]],"鴨子":[[1,1]],"音樂":[[1,1]],"東西":[[1,1]],"一行":[[1,1]],"有空":[[1,1]],"行距":[[0,1]],"個子":[[1,1]],"石頭":[[1,1]],"一部分":[[2,1]],"了解":[[0,1]],"春華":[[1,1]],"葉子":[[1,1]],"薄荷":[[0,1]],"分行":[[1,1]],"彎曲":[[1,1]],"大部分":[[2,1]],"當機":[[0,1]],"少年":[[0,1]],"樂師":[[0,1]],"變更":[[1,1]],"相鄰":[[0,1]],"嘴巴":[[1,1]],"接縫":[[1,1]],"婆婆":[[1,1]],"色調":[[1,1]],"還原":[[0,1]],"日子":[[1,1]],"要求":[[0,1]],"蓋子":[[1,1]],"為何":[[0,1]],"覺得":[[1,1]],"應用":[[0,1]],"唱反調":[[2,1]],"露出":[[0,1]],"免得":[[1,1]],"梯子":[[1,1]],"寒假":[[1,1]],"橘子":[[1,1]],"為了":[[0,1]],"本分":[[1,1]],"伯伯":[[1,1]],"放假":[[1,1]],"哥哥":[[1,1]],"木頭":[[1,1]]},PWRE=Object.keys(PW).length?new RegExp(Object.keys(PW).sort((a,b)=>b.length-a.length).join("|"),"g"):null;
 let ZYON=lsGet("mf-zy2",false)===true;   // 預設不加注音（Ashley 2026-11-15：使用者是大人），想要的人按右上角「注音」打開
 function zyMark(root){if(!PWRE||!ZYON)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|OPTION|CANVAS)$/.test(p.nodeName)||p.dataset&&p.dataset.zy||!/[\u4e00-\u9fff]/.test(n.nodeValue))return NodeFilter.FILTER_REJECT;PWRE.lastIndex=0;return PWRE.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
   const L=[];while(w.nextNode())L.push(w.currentNode);
