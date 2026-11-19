@@ -1868,7 +1868,7 @@ function sheetsI(ls,ans){if(!IDJD||!ls.length)return [];const J=IDJD,g=ls[0].g,z
   /* 一、意思 */
   qs.forEach((q,i)=>{const r=srng(q.w),others=sshuf(qs.filter(o=>o.m!==q.m).map(o=>o.m),r).concat(sshuf(pool.filter(m=>m!==q.m&&!qs.some(o=>o.m===m)),r)),opts=sshuf([q.m,...others.slice(0,3)],r);
     /* 選項接在題目後面、用①②③④（Ashley 2026-11-19：照段考卷的樣子） */
-    put(`<div class="iq">${i?"":`<p class="isec">一、選出成語正確的意思</p>`}<p class="iqh"><span class="ip">${ap(ABC[opts.indexOf(q.m)])}</span><span class="ic">${inum(i+1)}下列哪一個是「${idLine(q.w,zy,q.w,q.z)}」的意思？（${opts.map((o,k)=>`${ABC[k]}${idLine(o.replace(/。$/,""),zy)}`).join("　")}）</span></p></div>`);});
+    put(`<div class="iq">${i?"":`<p class="isec">一、選出成語正確的意思</p>`}<p class="iqh"><span class="ip">${ap(ABC[opts.indexOf(q.m)])}</span><span class="ic">${inum(i+1)}下列哪一個是「${idLine(q.w,zy,q.w,q.z)}」的意思？　${opts.map((o,k)=>`${ABC[k]}${idLine(o.replace(/。$/,""),zy)}`).join("　")}</span></p></div>`);});
   /* 二、句子：每 5 題一組，換新的一頁 */
   const fs=qs.filter(q=>q.e);for(let s0=0;s0<fs.length;s0+=5){const grp=fs.slice(s0,s0+5),bank=sshuf(grp,srng(grp.map(q=>q.w).join("")));b=page();
     put(`<div class="iq">${s0?"":`<p class="isec">二、選出適合的成語，填進句子裡</p>`}<div class="ibank"><p>${bank.map((q,k)=>`<span class="ibw">${ABC[k]}${idLine(q.w,zy,q.w,q.z)}</span>`).join("　")}</p></div></div>`);
