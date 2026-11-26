@@ -1974,7 +1974,7 @@ const SB=(()=>{
   function arrow(p,color){if(p.length<2)return;const k=K();const a=p[p.length-2],b=p[p.length-1];const ang=Math.atan2(b[1]-a[1],b[0]-a[0]);const x=b[0]*k,y=b[1]*k,s=10*k;
     ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x+Math.cos(ang)*s,y+Math.sin(ang)*s);ctx.lineTo(x+Math.cos(ang+2.5)*s,y+Math.sin(ang+2.5)*s);ctx.lineTo(x+Math.cos(ang-2.5)*s,y+Math.sin(ang-2.5)*s);ctx.fill();}
   function draw(extra){if(!E)return;grid();
-    if(busy||mode==="test"||E.ghost.checked)strokes.forEach((p,i)=>fillS(i,"#ebe2df"));
+    if(busy||E.ghost.checked)strokes.forEach((p,i)=>fillS(i,"#ebe2df"));
     for(let i=0;i<done;i++)fillS(i,"#534545");
     if(hintStroke>=0&&hintStroke<strokes.length){fillS(hintStroke,"rgba(237,106,44,.6)");arrow(strokes[hintStroke],"#ed6a2c");label(strokes[hintStroke],hintStroke+1,"#ed6a2c");}
     if(extra)extra();
@@ -2025,9 +2025,9 @@ const SB=(()=>{
     [...E.strip.children].forEach((b,j)=>b.toggleAttribute("aria-current",j===i));
     const cb=E.strip.children[i];if(cb&&cb.scrollIntoView)cb.scrollIntoView({block:"nearest",inline:"nearest"});
     updInfo();draw();
-    if(quiet)return;if(mode==="prac"&&E.auto.checked)setTimeout(()=>{if(E&&ch===x.c)playAll();},250);else setMsg(mode==="test"?"測驗開始！照筆順寫出「"+ch+"」。":"從第 1 畫開始寫。");}
+    if(quiet)return;if(mode==="prac"&&E.auto.checked)setTimeout(()=>{if(E&&mode==="prac"&&ch===x.c)playAll();},250);else setMsg(mode==="test"?"測驗開始！照筆順寫出「"+ch+"」。":"從第 1 畫開始寫。");}
   function setMode(m){mode=m;E.mP.setAttribute("aria-pressed",m==="prac");E.mT.setAttribute("aria-pressed",m==="test");
-    if(tour)setTour(false);E.ans.hidden=(m!=="test");E.tour.hidden=E.play.hidden=E.ghostRow.hidden=E.autoRow.hidden=(m==="test");
+    if(tour)setTour(false);E.ans.hidden=(m!=="test");E.tour.hidden=E.play.hidden=E.autoRow.hidden=(m==="test");
     E.note.textContent=m==="test"?"測驗模式：不先播放、沒有提示，寫錯 3 次才會出現提示。":"播放模式：先看正確筆順，寫錯會馬上提示。";pick(idx);}
   let drawing=false,pid=null;
   const toLocal=e=>{const r=E.cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*256,(e.clientY-r.top)/r.height*256];};
@@ -2052,7 +2052,7 @@ const SB=(()=>{
         <div class="sk-info"><div class="bg"></div><div class="zz"></div><div class="ct">第 <b class="cur">1</b> 畫<br>共 <b class="tot">1</b> 畫</div></div>
         <div class="sk-msg" role="status" aria-live="polite"></div>
         <div class="sk-btns"><button class="btn p wide" data-a="tour" type="button">整課連續播放</button><button class="btn wide" data-a="play" type="button">這個字再播放一次</button><button class="btn wide" data-a="ans" type="button">看正確筆順</button><button class="btn" data-a="prev" type="button">上一字</button><button class="btn" data-a="redo" type="button">重寫</button><button class="btn" data-a="next" type="button">下一字</button></div>
-        <label class="ghostRow" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="ghost" style="flex:none;margin:0" checked><span>顯示淡淡的字（描紅）</span></label>
+        <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="ghost" style="flex:none;margin:0" checked><span>顯示淡淡的字（描紅）</span></label>
         <label class="autoRow" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="auto" style="flex:none;margin:0" checked><span>換字時先自動播放筆順</span></label>
         <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="sndchk" style="flex:none;margin:0" ${SND?"checked":""}><span>音效（寫錯提示音、寫完整個字的音效）</span></label>
         <label class="penRow" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="pen" style="flex:none;margin:0" ${PEN?"checked":""}><span>寫字時的沙沙聲</span></label>
@@ -2063,7 +2063,7 @@ const SB=(()=>{
       </div>`;
       m.appendChild(wrap);const q=s=>wrap.querySelector(s);
       E={strip:q(".sk-strip"),board:q(".sk-board"),cv:q("canvas"),big:q(".bg"),zy:q(".zz"),cur:q(".cur"),tot:q(".tot"),msg:q(".sk-msg"),stars:q(".sk-stars"),
-         note:q(".note"),score:q(".score"),ghost:q(".ghost"),auto:q(".auto"),ghostRow:q(".ghostRow"),autoRow:q(".autoRow"),
+         note:q(".note"),score:q(".score"),ghost:q(".ghost"),auto:q(".auto"),autoRow:q(".autoRow"),
          play:q('[data-a="play"]'),tour:q('[data-a="tour"]'),ans:q('[data-a="ans"]'),mP:q('[data-m="prac"]'),mT:q('[data-m="test"]')};
       ctx=E.cv.getContext("2d");bindCanvas();
       q('[data-a="play"]').onclick=()=>{setTour(false);playAll();};q('[data-a="tour"]').onclick=()=>playLesson();
