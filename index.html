@@ -1973,9 +1973,15 @@ const SB=(()=>{
     ctx.fillStyle="#fff";ctx.font=`bold ${Math.round(12*k/1.4)}px system-ui,sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(n,x,y+1);}
   function arrow(p,color){if(p.length<2)return;const k=K();const a=p[p.length-2],b=p[p.length-1];const ang=Math.atan2(b[1]-a[1],b[0]-a[0]);const x=b[0]*k,y=b[1]*k,s=10*k;
     ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x+Math.cos(ang)*s,y+Math.sin(ang)*s);ctx.lineTo(x+Math.cos(ang+2.5)*s,y+Math.sin(ang+2.5)*s);ctx.lineTo(x+Math.cos(ang-2.5)*s,y+Math.sin(ang-2.5)*s);ctx.fill();}
+  const acceptedPaths=[];
   function draw(extra){if(!E)return;grid();
-    if(busy||E.ghost.checked)strokes.forEach((p,i)=>fillS(i,"#ebe2df"));
-    for(let i=0;i<done;i++)fillS(i,"#534545");
+    const showHandwriting=mode==="test"&&E.original.checked;
+    const compare=showHandwriting&&done>0&&done===strokes.length;
+    if(busy||compare||E.ghost.checked)strokes.forEach((p,i)=>fillS(i,"#ebe2df"));
+    for(let i=0;i<done;i++){
+      if(showHandwriting)ink(acceptedPaths[i],"#3155a2",6);
+      else fillS(i,"#534545");
+    }
     if(hintStroke>=0&&hintStroke<strokes.length){fillS(hintStroke,"rgba(237,106,44,.6)");arrow(strokes[hintStroke],"#ed6a2c");label(strokes[hintStroke],hintStroke+1,"#ed6a2c");}
     if(extra)extra();
     if(live&&live.length>1){ctx.strokeStyle="#3155a2";ctx.lineWidth=12*K()/1.2;ctx.lineCap="round";ctx.lineJoin="round";path(live);ctx.stroke();}}
@@ -2001,7 +2007,7 @@ const SB=(()=>{
     if(missHere>=(mode==="test"?3:2))hintStroke=i;draw();}
   function flashRed(user){return new Promise(res=>{draw(()=>{ctx.strokeStyle="rgba(213,57,47,.8)";ctx.lineWidth=12*K()/1.2;ctx.lineCap="round";path(user);ctx.stroke();});setTimeout(res,450);});}
   function judge(user){const k=done;const s=score(user,strokes[k]);
-    if(s.ok){done++;missHere=0;hintStroke=-1;draw();updInfo();if(done>=strokes.length){sfx.done();finish();}else{setMsg(`很好！第 ${k+1} 畫寫對了。接著寫第 ${k+2} 畫。`,"good");}return;}
+    if(s.ok){if(mode==="test")acceptedPaths[k]=user;done++;missHere=0;hintStroke=-1;draw();updInfo();if(done>=strokes.length){sfx.done();finish();}else{setMsg(`很好！第 ${k+1} 畫寫對了。接著寫第 ${k+2} 畫。`,"good");}return;}
     miss++;missHere++;sfx.bad();let best=-1,bv=1e9;
     for(let j=k+1;j<strokes.length;j++){const t=score(user,strokes[j]);if(t.ok&&t.f<bv){bv=t.f;best=j;}}
     if(best>=0)setMsg(`筆順不對喔！你寫的是第 ${best+1} 畫，現在要先寫第 ${k+1} 畫。看橘色的提示。`,"bad");
@@ -2020,14 +2026,14 @@ const SB=(()=>{
       if(BEST[x.c]){const s=document.createElement("span");s.className="st";s.textContent="★".repeat(BEST[x.c]);b.appendChild(s);}
       b.onclick=()=>pick(i);E.strip.appendChild(b);});
     let n=0,d=0;list.forEach(x=>{if(BEST[x.c])d++;if(BEST[x.c]===3)n++;});E.score.textContent=`完成 ${d} / ${list.length} 字・三顆星 ${n} 字`;}   /* 原本只顯示三顆星數，網友以為只有一個字寫對 */
-  function pick(i,quiet){idx=i;const x=list[i];ch=x.c;strokes=SDATA[ch];ol=outlines(ch);if(ol&&ol.length!==strokes.length)ol=null;done=0;miss=0;peek=false;missHere=0;hintStroke=-1;animToken++;busy=false;
+  function pick(i,quiet){acceptedPaths.length=0;idx=i;const x=list[i];ch=x.c;strokes=SDATA[ch];ol=outlines(ch);if(ol&&ol.length!==strokes.length)ol=null;done=0;miss=0;peek=false;missHere=0;hintStroke=-1;animToken++;busy=false;
     E.big.textContent=ch;E.zy.textContent=x.z||"";E.stars.textContent="";strokeStart=ch;
     [...E.strip.children].forEach((b,j)=>b.toggleAttribute("aria-current",j===i));
     const cb=E.strip.children[i];if(cb&&cb.scrollIntoView)cb.scrollIntoView({block:"nearest",inline:"nearest"});
     updInfo();draw();
     if(quiet)return;if(mode==="prac"&&E.auto.checked)setTimeout(()=>{if(E&&mode==="prac"&&ch===x.c)playAll();},250);else setMsg(mode==="test"?"測驗開始！照筆順寫出「"+ch+"」。":"從第 1 畫開始寫。");}
   function setMode(m){mode=m;E.mP.setAttribute("aria-pressed",m==="prac");E.mT.setAttribute("aria-pressed",m==="test");
-    if(tour)setTour(false);E.ans.hidden=(m!=="test");E.tour.hidden=E.play.hidden=E.autoRow.hidden=(m==="test");
+    if(tour)setTour(false);E.originalRow.hidden=E.ans.hidden=(m!=="test");E.tour.hidden=E.play.hidden=E.autoRow.hidden=(m==="test");
     E.note.textContent=m==="test"?"測驗模式：不先播放、沒有提示，寫錯 3 次才會出現提示。":"播放模式：先看正確筆順，寫錯會馬上提示。";pick(idx);}
   let drawing=false,pid=null;
   const toLocal=e=>{const r=E.cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*256,(e.clientY-r.top)/r.height*256];};
@@ -2053,6 +2059,7 @@ const SB=(()=>{
         <div class="sk-msg" role="status" aria-live="polite"></div>
         <div class="sk-btns"><button class="btn p wide" data-a="tour" type="button">整課連續播放</button><button class="btn wide" data-a="play" type="button">這個字再播放一次</button><button class="btn wide" data-a="ans" type="button">看正確筆順</button><button class="btn" data-a="prev" type="button">上一字</button><button class="btn" data-a="redo" type="button">重寫</button><button class="btn" data-a="next" type="button">下一字</button></div>
         <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="ghost" style="flex:none;margin:0" checked><span>顯示淡淡的字（描紅）</span></label>
+        <label class="originalRow" hidden style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="original" style="flex:none;margin:0"><span>寫完後比對字形</span></label>
         <label class="autoRow" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="auto" style="flex:none;margin:0" checked><span>換字時先自動播放筆順</span></label>
         <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="sndchk" style="flex:none;margin:0" ${SND?"checked":""}><span>音效（寫錯提示音、寫完整個字的音效）</span></label>
         <label class="penRow" style="display:flex;gap:8px;align-items:center"><input type="checkbox" class="pen" style="flex:none;margin:0" ${PEN?"checked":""}><span>寫字時的沙沙聲</span></label>
@@ -2063,7 +2070,7 @@ const SB=(()=>{
       </div>`;
       m.appendChild(wrap);const q=s=>wrap.querySelector(s);
       E={strip:q(".sk-strip"),board:q(".sk-board"),cv:q("canvas"),big:q(".bg"),zy:q(".zz"),cur:q(".cur"),tot:q(".tot"),msg:q(".sk-msg"),stars:q(".sk-stars"),
-         note:q(".note"),score:q(".score"),ghost:q(".ghost"),auto:q(".auto"),autoRow:q(".autoRow"),
+         note:q(".note"),score:q(".score"),ghost:q(".ghost"),original:q(".original"),originalRow:q(".originalRow"),auto:q(".auto"),autoRow:q(".autoRow"),
          play:q('[data-a="play"]'),tour:q('[data-a="tour"]'),ans:q('[data-a="ans"]'),mP:q('[data-m="prac"]'),mT:q('[data-m="test"]')};
       ctx=E.cv.getContext("2d");bindCanvas();
       q('[data-a="play"]').onclick=()=>{setTour(false);playAll();};q('[data-a="tour"]').onclick=()=>playLesson();
@@ -2071,7 +2078,7 @@ const SB=(()=>{
       q('[data-a="redo"]').onclick=()=>{animToken++;busy=false;done=0;miss=0;peek=false;missHere=0;hintStroke=-1;E.stars.textContent="";draw();updInfo();setMsg("重新開始，從第 1 畫寫起。");};
       q('[data-a="next"]').onclick=()=>{if(idx<list.length-1)pick(idx+1);};
       q('[data-a="prev"]').onclick=()=>{if(idx>0)pick(idx-1);};
-      E.ghost.onchange=()=>draw();
+      E.original.onchange=E.ghost.onchange=()=>draw();
       wrap.querySelector(".sndchk").onchange=ev=>{SND=ev.target.checked;try{localStorage.setItem("szs-snd",SND?"1":"0")}catch(_){}if(SND){ac();sfx.ok();}};
       wrap.querySelector(".pen").onchange=ev=>{PEN=ev.target.checked;try{localStorage.setItem("szs-pen",PEN?"1":"0")}catch(_){}};E.mP.onclick=()=>setMode("prac");E.mT.onclick=()=>setMode("test");
       let start=list.findIndex(x=>x.c===strokeStart);idx=start<0?0:start;
